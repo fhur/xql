@@ -10,11 +10,11 @@ SynthQL is composed of 6 packages:
 
 1.  `@synthql/backend`: contains the query engine, `QueryEngine`, which executes SynthQL queries. You will usually want to use this inside an HTTP server, and send queries from your client apps via HTTP request, but you can also use it to execute SynthQL queries directly (inside a Node.js script).
 
-1.  `@synthql/react`: contains a TanStack Query client, `useSynthql`, that can be used in a React or React-based framework app, to send SynthQL queries to an HTTP server instance of the query engine.
+1.  `@synthql/react`: contains a [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/installation) client, `useSynthql`, that can be used in a React or React-based framework app, to send SynthQL queries to an HTTP server instance of the query engine.
 
-1.  `@synthql/handler-express`: contains a handler function that you can use in Express.js apps to parse and execute SynthQL queries sent over HTTP.
+1.  `@synthql/handler-express`: contains a handler function that you can use in [Express.js](https://expressjs.com/en/starter/installing.html) apps to parse and execute SynthQL queries sent over HTTP.
 
-1.  `@synthql/handler-next`: contains a handler function that you can use in Next.js apps to parse and execute SynthQL queries sent over HTTP.
+1.  `@synthql/handler-next`: contains a handler function that you can use in [Next.js](https://nextjs.org/docs/14/getting-started/installation) apps to parse and execute SynthQL queries sent over HTTP.
 
 1.  `@synthql/cli`: the CLI that allows you to generate the TypeScript types and schema files for your database.
 
