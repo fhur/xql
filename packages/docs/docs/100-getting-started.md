@@ -175,7 +175,7 @@ This will generate a types file at `src/generated/db.ts`, a schema definitions f
 import { Query } from '@synthql/queries';
 import { DB, from } from 'src/generated';
 
-const findUserByIds = (ids: string[]): Query<DB> => {
+const findUserByIds = (ids: string[]) => {
     return (
         from('users')
             // Select which columns you want
