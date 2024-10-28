@@ -78,6 +78,12 @@ The `QueryEngine` compiles SynthQL queries into plain SQL and sends them to the 
 // src/queryEngine.ts
 import { QueryEngine } from '@synthql/backend';
 
+// Ensure DATABASE_URL is set in your .env file:
+// DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
+
 export const queryEngine = new QueryEngine({
     url: process.env.DATABASE_URL,
 });
@@ -88,14 +94,35 @@ export const queryEngine = new QueryEngine({
 ```ts
 // src/index.ts
 import express from 'express';
+import cors from 'cors';
 import { createExpressSynthqlHandler } from '@synthql/handler-express';
 import { queryEngine } from './queryEngine';
 
 const app = express();
+
+// Enable CORS for your client application
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000'
+}));
+
 const expressSynthqlRequestHandler = createExpressSynthqlHandler(queryEngine);
 
-app.post('/synthql', async (req, res) => {
-    return await expressSynthqlRequestHandler(req, res);
+app.post('/synthql', async (req, res, next) => {
+    try {
+        return await expressSynthqlRequestHandler(req, res);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({
+        error: process.env.NODE_ENV === 'production' 
+            ? 'Internal server error' 
+            : err.message
+    });
 });
 
 app.listen(3000);
