@@ -107,7 +107,9 @@ The `QueryEngine` compiles SynthQL queries into plain SQL and sends them to the 
 import { QueryEngine } from '@synthql/backend';
 
 export const queryEngine = new QueryEngine({
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL ?? (() => {
+        throw new Error('DATABASE_URL environment variable is required');
+    })(),
 });
 ```
 
