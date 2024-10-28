@@ -4,7 +4,7 @@ This is a brief, high level guide that documents SynthQL's architecture.
 
 ## Package structure
 
-SynthQL is composed of 6 packages:
+SynthQL is composed of 7 packages:
 
 1.  `@synthql/queries`: contains the query builder and common types. This package can be used both in client and server code.
 
@@ -12,9 +12,11 @@ SynthQL is composed of 6 packages:
 
 1.  `@synthql/react`: contains a [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/installation) client, `useSynthql`, that can be used in a React or React-based framework app, to send SynthQL queries to an HTTP server instance of the query engine.
 
-1.  `@synthql/handler-express`: contains a handler function that you can use in [Express.js](https://expressjs.com/en/starter/installing.html) apps to parse and execute SynthQL queries sent over HTTP.
+1.  `@synthql/handler-express`: contains a handler function, `createExpressSynthqlHandler`, that you can use in [Express.js](https://expressjs.com/en/starter/installing.html) apps to parse and execute SynthQL queries sent over HTTP.
 
-1.  `@synthql/handler-next`: contains a handler function that you can use in [Next.js](https://nextjs.org/docs/14/getting-started/installation) apps to parse and execute SynthQL queries sent over HTTP.
+1.  `@synthql/handler-next`: contains a handler function, `createNextSynthqlHandler`, that you can use in [Next.js](https://nextjs.org/docs/14/getting-started/installation) apps to parse and execute SynthQL queries sent over HTTP.
+
+1.  `@synthql/introspect`: contains the database types and schema generation function, `generate`, which is used inside the CLI. You can use this function to generate the same output without the CLI wrapper.
 
 1.  `@synthql/cli`: the CLI that allows you to generate the TypeScript types and schema files for your database.
 

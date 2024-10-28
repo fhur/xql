@@ -152,7 +152,7 @@ import { useSynthql } from '@synthql/react';
 import { DB, from } from '@/generated';
 import { User } from '@/components/User';
 
-const findUserByIds = (ids: string[]) => {
+const findUserByIds = (ids: number[]) => {
     return (
         from('users')
             // Select which columns you want
