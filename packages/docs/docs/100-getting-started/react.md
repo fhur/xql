@@ -124,9 +124,7 @@ export default function Home() {
 
     return (
         <main>
-            {result.data?.map((user) => (
-                <User key={user.user_id} userInfo={user} />
-            ))}
+            {result.data?.map((user) => <User key={user.id} userInfo={user} />)}
         </main>
     );
 }
