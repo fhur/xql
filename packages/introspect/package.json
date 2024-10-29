@@ -1,7 +1,7 @@
 {
     "name": "@synthql/introspect",
     "type": "module",
-    "version": "0.106.4",
+    "version": "0.107.4",
     "main": "build/src/index.cjs",
     "module": "build/src/index.js",
     "types": "build/types/src/index.d.ts",
@@ -31,7 +31,7 @@
     },
     "dependencies": {
         "@apidevtools/json-schema-ref-parser": "^11.5.4",
-        "@synthql/queries": "0.106.4",
+        "@synthql/queries": "0.107.4",
         "extract-pg-schema": "^5.1.1",
         "json-schema-to-typescript": "^13.1.2"
     },
