@@ -1,6 +1,6 @@
 # @synthql/handler-express
 
-SynthQL-compatible route handler function for use in Express.js server app.
+SynthQL-compatible route handler function for use in [Express.js](https://expressjs.com/en/starter/installing.html) server app.
 
 ```ts
 // src/queryEngine.ts

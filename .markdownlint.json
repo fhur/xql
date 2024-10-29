@@ -2,7 +2,7 @@
     "first-line-h1": false,
     "no-inline-html": false,
     "line-length": {
-        "line_length": 250
+        "line_length": 300
     },
     "list-marker-space": {
         "ol_single": 2,
