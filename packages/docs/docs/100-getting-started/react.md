@@ -1,11 +1,10 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import InstallPackage from '../../src/components/HomepageFeatures/InstallPackage';
 
-# Getting started: React
+# React
 
 :::info
-This guide assumes that you have setup a server to receive and execute SynthQL queries. If you haven't, you should check out:
-[Quick start: Node.js](./quick-start), [Getting started: Express.js](./express) and [Getting started: Next.js Route Handlers](./next) first, to get started
+This guide assumes that you have setup a server to receive and execute SynthQL queries. If you haven't yet, check out:
+[Quick start: Node.js](./quick-start), [Getting started: Express.js](./express) and [Getting started: Next.js Route Handlers](./next)
 :::
 
 ## Install the packages
@@ -14,57 +13,11 @@ Start by installing the SynthQL packages:
 
 ### Query builder package
 
-<Tabs>
-<TabItem value="npm" label="npm">
-
-```bash
-npm install @synthql/queries
-```
-
-</TabItem>
-<TabItem value="yarn" label="yarn">
-
-```bash
-yarn add @synthql/queries
-```
-
-</TabItem>
-<TabItem value="pnpm" label="pnpm">
-
-```bash
-pnpm add @synthql/queries
-```
-
-</TabItem>
-</Tabs>
+<InstallPackage packageName="@synthql/queries" />
 
 ### React query client package
 
-<Tabs>
-<TabItem value="npm" label="npm">
-
-```bash
-npm install @synthql/react
-```
-
-</TabItem>
-  
-<TabItem value="yarn" label="yarn">
-
-```bash
-yarn add @synthql/react
-```
-
-</TabItem>
-
-<TabItem value="pnpm" label="pnpm">
-
-```bash
-pnpm add @synthql/react
-```
-
-</TabItem>
-</Tabs>
+<InstallPackage packageName="@synthql/react" />
 
 ## Generate database types
 
@@ -73,7 +26,7 @@ Then generate the types and schema definitions from your database, using the `@s
 ```bash
 npx @synthql/cli generate \
     # The database connection string
-    --url=postgres://postgres:postgres@localhost:5432/postgres \
+    --url=postgresql://user:password@localhost:5432/dbname \
     # The folder where SynthQL will write the generated types
     --out=./src/generated
 ```
@@ -90,7 +43,6 @@ For client-side query execution, you want to use the `SynthqlProvider` inside an
 
 ```tsx
 // src/providers/AppProvider.tsx
-// prettier-ignore
 'use client'; // Use in React Server Components app to specify that it is a client component
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -146,7 +98,6 @@ export default function RootLayout({
 
 ```tsx
 // src/app/page.tsx
-// prettier-ignore
 'use client'; // Use in React Server Components app to specify that it is a client component
 import { useSynthql } from '@synthql/react';
 import { DB, from } from '@/generated';

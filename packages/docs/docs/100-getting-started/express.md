@@ -1,7 +1,6 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import InstallPackage from '../../src/components/HomepageFeatures/InstallPackage';
 
-# Getting started: Express.js
+# Express.js
 
 :::tip
 Before reading this, first check out:
@@ -14,57 +13,11 @@ Start by installing the SynthQL packages:
 
 ### Query engine package
 
-<Tabs>
-<TabItem value="npm" label="npm">
-
-```bash
-npm install @synthql/backend
-```
-
-</TabItem>
-<TabItem value="yarn" label="yarn">
-
-```bash
-yarn add @synthql/backend
-```
-
-</TabItem>
-<TabItem value="pnpm" label="pnpm">
-
-```bash
-pnpm add @synthql/backend
-```
-
-</TabItem>
-</Tabs>
+<InstallPackage packageName="@synthql/backend" />
 
 ### Express.js handler package
 
-<Tabs>
-<TabItem value="npm" label="npm">
-
-```bash
-npm install @synthql/handler-express
-```
-
-</TabItem>
-  
-<TabItem value="yarn" label="yarn">
-
-```bash
-yarn add @synthql/handler-express
-```
-
-</TabItem>
-
-<TabItem value="pnpm" label="pnpm">
-
-```bash
-pnpm add @synthql/handler-express
-```
-
-</TabItem>
-</Tabs>
+<InstallPackage packageName="@synthql/handler-express" />
 
 ## Express.js usage
 
@@ -81,7 +34,7 @@ import { QueryEngine } from '@synthql/backend';
 // Ensure DATABASE_URL is set in your .env file:
 // DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL environment variable is required');
+    throw new Error('DATABASE_URL environment variable is required!');
 }
 
 export const queryEngine = new QueryEngine({
@@ -94,35 +47,14 @@ export const queryEngine = new QueryEngine({
 ```ts
 // src/index.ts
 import express from 'express';
-import cors from 'cors';
 import { createExpressSynthqlHandler } from '@synthql/handler-express';
 import { queryEngine } from './queryEngine';
 
 const app = express();
-
-// Enable CORS for your client application
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000'
-}));
-
 const expressSynthqlRequestHandler = createExpressSynthqlHandler(queryEngine);
 
-app.post('/synthql', async (req, res, next) => {
-    try {
-        return await expressSynthqlRequestHandler(req, res);
-    } catch (error) {
-        next(error);
-    }
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({
-        error: process.env.NODE_ENV === 'production' 
-            ? 'Internal server error' 
-            : err.message
-    });
+app.post('/synthql', async (req, res) => {
+    return await expressSynthqlRequestHandler(req, res);
 });
 
 app.listen(3000);

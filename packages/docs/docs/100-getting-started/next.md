@@ -1,7 +1,6 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import InstallPackage from '../../src/components/HomepageFeatures/InstallPackage';
 
-# Getting started: Next.js Route Handlers
+# Next.js Route Handlers
 
 :::tip
 Before reading this, first check out:
@@ -14,57 +13,11 @@ Start by installing the SynthQL packages:
 
 ### Query engine package
 
-<Tabs>
-<TabItem value="npm" label="npm">
-
-```bash
-npm install @synthql/backend
-```
-
-</TabItem>
-<TabItem value="yarn" label="yarn">
-
-```bash
-yarn add @synthql/backend
-```
-
-</TabItem>
-<TabItem value="pnpm" label="pnpm">
-
-```bash
-pnpm add @synthql/backend
-```
-
-</TabItem>
-</Tabs>
+<InstallPackage packageName="@synthql/backend" />
 
 ### Next.js handler package
 
-<Tabs>
-<TabItem value="npm" label="npm">
-
-```bash
-npm install @synthql/handler-next
-```
-
-</TabItem>
-  
-<TabItem value="yarn" label="yarn">
-
-```bash
-yarn add @synthql/handler-next
-```
-
-</TabItem>
-
-<TabItem value="pnpm" label="pnpm">
-
-```bash
-pnpm add @synthql/handler-next
-```
-
-</TabItem>
-</Tabs>
+<InstallPackage packageName="@synthql/handler-next" />
 
 ## Next.js Route Handler usage
 
@@ -77,6 +30,12 @@ The `QueryEngine` compiles SynthQL queries into plain SQL and sends them to the 
 ```ts
 // src/queryEngine.ts
 import { QueryEngine } from '@synthql/backend';
+
+// Ensure DATABASE_URL is set in your .env file:
+// DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL environment variable is required!');
+}
 
 export const queryEngine = new QueryEngine({
     url: process.env.DATABASE_URL,
@@ -93,6 +52,6 @@ import { queryEngine } from '../../../queryEngine';
 const nextSynthqlRequestHandler = createNextSynthqlHandler(queryEngine);
 
 export async function POST(request: Request) {
-    return await nextSynthqlRequestHandler(request);
+    return nextSynthqlRequestHandler(request);
 }
 ```
