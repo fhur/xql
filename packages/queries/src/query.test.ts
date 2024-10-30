@@ -1,11 +1,24 @@
 import { describe, expect, test } from 'vitest';
-import { DeferredResult, Query, QueryResult, Table, col } from '.';
+import {
+    DeferredResult,
+    Query,
+    QueryResult,
+    QueryResultType,
+    Table,
+    col,
+} from '.';
 import { DB, from } from './generated';
 
 describe('queries', () => {
     function fakeQueryResult<TQuery extends Query<DB, Table<DB>>>(
         q: TQuery,
     ): QueryResult<DB, TQuery> {
+        return {} as any;
+    }
+
+    function fakeQueryResultType<TQuery extends Query<DB, Table<DB>>>(
+        q: TQuery,
+    ): QueryResultType<DB, TQuery> {
         return {} as any;
     }
 
@@ -57,8 +70,15 @@ describe('queries', () => {
     test('Find many actors', () => {
         const q = from('actor').columns('actor_id', 'first_name').many();
 
+        type Actor = { actor_id: number; first_name: string };
+
         const result = fakeQueryResult(q);
-        result satisfies Array<{ actor_id: number; first_name: string }>;
+
+        result satisfies Array<Actor>;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Actor;
     });
 
     test('Find many actors with `offset()`', () => {
@@ -67,22 +87,43 @@ describe('queries', () => {
             .offset(2)
             .many();
 
+        type Actor = { actor_id: number; first_name: string };
+
         const result = fakeQueryResult(q);
-        result satisfies Array<{ actor_id: number; first_name: string }>;
+
+        result satisfies Array<Actor>;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Actor;
     });
 
     test('Find many actors with `take()`', () => {
         const q = from('actor').columns('actor_id', 'first_name').take(2);
 
+        type Actor = { actor_id: number; first_name: string };
+
         const result = fakeQueryResult(q);
-        result satisfies Array<{ actor_id: number; first_name: string }>;
+
+        result satisfies Array<Actor>;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Actor;
     });
 
     test('Find maybe actor', () => {
         const q = from('actor').columns('actor_id', 'first_name').maybe();
 
+        type Actor = { actor_id: number; first_name: string };
+
         const result = fakeQueryResult(q);
-        result satisfies { actor_id: number; first_name: string } | null;
+
+        result satisfies Actor | null;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Actor;
     });
 
     test('Find one actor by ID', () => {
@@ -93,14 +134,20 @@ describe('queries', () => {
             })
             .one();
 
-        const result = fakeQueryResult(q);
-
-        result satisfies {
+        type Actor = {
             actor_id: number;
             first_name: string;
             last_name: string;
             last_update: string;
         };
+
+        const result = fakeQueryResult(q);
+
+        result satisfies Actor;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Actor;
 
         expect(q.name).toMatchInlineSnapshot(`"actor-by-actor_id"`);
     });
@@ -151,13 +198,52 @@ describe('queries', () => {
         };
     });
 
-    test('defer()', () => {
+    test('defer() with all()', () => {
         const q = from('customer').columns('email', 'first_name').defer().all();
 
+        type Customer = { email: string | null; first_name: string };
+
         const result = fakeQueryResult(q);
-        result satisfies DeferredResult<
-            Array<{ email: string | null; first_name: string }>
-        >;
+
+        result satisfies DeferredResult<Array<Customer>>;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Customer;
+    });
+
+    test('defer() with first()', () => {
+        const q = from('customer')
+            .columns('email', 'first_name')
+            .defer()
+            .first();
+
+        type Customer = { email: string | null; first_name: string };
+
+        const result = fakeQueryResult(q);
+
+        result satisfies DeferredResult<Customer | null>;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Customer;
+    });
+
+    test('defer() with firstOrThrow()', () => {
+        const q = from('customer')
+            .columns('email', 'first_name')
+            .defer()
+            .firstOrThrow();
+
+        type Customer = { email: string | null; first_name: string };
+
+        const result = fakeQueryResult(q);
+
+        result satisfies DeferredResult<Customer>;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Customer;
     });
 
     test('defer() ', () => {
@@ -171,11 +257,18 @@ describe('queries', () => {
 
         const q = from('film').include({ language }).columns('title').all();
 
-        const result = fakeQueryResult(q);
-        result satisfies Array<{
+        type Language = {
             title: string;
             language: DeferredResult<{ name: string } | null>;
-        }>;
+        };
+
+        const result = fakeQueryResult(q);
+
+        result satisfies Array<Language>;
+
+        const coreResult = fakeQueryResultType(q);
+
+        coreResult satisfies Language;
 
         expect(q.name).toMatchInlineSnapshot(`"film-all"`);
     });

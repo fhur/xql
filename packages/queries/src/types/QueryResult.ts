@@ -9,6 +9,24 @@ export type QueryResult<DB, TQuery> = Simplify<
         : never
 >;
 
+export type QueryResultType<DB, TQuery> =
+    TQuery extends Query<DB, infer TTable>
+        ? TQuery extends { cardinality: 'many' }
+            ? TQuery extends { lazy: true }
+                ? Simplify<ApplyCardinality<DB, TTable, TQuery>>[0]
+                : QueryResult<DB, TQuery>[0]
+            : TQuery extends { cardinality: 'maybe' }
+              ? TQuery extends { lazy: true }
+                  ? Exclude<
+                        Simplify<ApplyCardinality<DB, TTable, TQuery>>,
+                        null
+                    >
+                  : Exclude<QueryResult<DB, TQuery>, null>
+              : TQuery extends { lazy: true }
+                ? Simplify<ApplyCardinality<DB, TTable, TQuery>>
+                : QueryResult<DB, TQuery>
+        : never;
+
 type Simplify<T> =
     T extends Array<infer U>
         ? Simplify<U>[]
