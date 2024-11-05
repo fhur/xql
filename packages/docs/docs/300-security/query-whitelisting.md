@@ -1,6 +1,6 @@
-# Registered queries
+# Query whitelisting
 
-One of the core security goals of SynthQL is to be out-of-the-box secure. This means that by default the QueryEngine will not execute unknown queries. Queries need to be explicitly registered with the `QueryEngine` for them to be executed.
+One of the core security goals of SynthQL is to be secure out-of-the-box. This means that, by default, the `QueryEngine` will not execute unknown queries. Queries need to be explicitly registered (i.e., `whitelisted`) with the `QueryEngine` in order to be executed.
 
 ```ts
 const findAllActiveUsers = () => from('users')
@@ -92,9 +92,11 @@ As a lot of the security of SynthQL depends on the registered queries, it is imp
 
 The high level idea is simple:
 
-1. Identifying queries: When a query is registered, we calculate a hash of the query. This hash is then used to identify the query.
-2. Checking queries: When a query is executed, the QueryEngine will check the hash of the query to ensure that it has been registered.
-3. Parameter substitution: When a query hash matches, the parameter values are substituted and the query is executed.
+1.  Identifying queries: When a query is registered, we calculate a hash of the query. This hash is then used to identify the query.
+
+2.  Checking queries: When a query is executed, the QueryEngine will check the hash of the query to ensure that it has been registered.
+
+3.  Parameter substitution: When a query hash matches, the parameter values are substituted and the query is executed.
 
 ### Identifying queries
 

@@ -29,7 +29,7 @@ This behaviour can be disabled with the `allowUnknownQueries` option.
 const queryEngine = new QueryEngine({..., allowUnknownQueries:true});
 ```
 
-You can read more about registered queries [here](/docs/security/registered-queries).
+You can read more about registered queries [here](/docs/security/query-whitelisting).
 
 ## Restricting access to tables and columns
 

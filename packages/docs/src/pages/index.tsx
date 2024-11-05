@@ -6,7 +6,7 @@ import Heading from '@theme/Heading';
 export default function Home(): JSX.Element {
     return (
         <Layout
-            title={`SynthQL: Type-safe, composable queries`}
+            title={`SynthQL: type-safe, composable queries`}
             description="The type-safe, composable query language"
         >
             <header
@@ -66,43 +66,46 @@ export default function Home(): JSX.Element {
                 >
                     <div className="row">
                         <div className="col col--6">
-                            <h2>What is SynthQL</h2>
+                            <h2>What is SynthQL?</h2>
 
                             <p>
-                                SynthQL is a full stack HTTP client for your
+                                SynthQL is a full-stack HTTP client for your
                                 PostgreSQL database. It lets you declaratively
-                                describe your React component's data
+                                describe your client components' data
                                 dependencies.
                             </p>
 
                             <p>
-                                With SynthQL you can focus on building great
-                                products instead of spending time thinking how
-                                to most efficiently fetch data into your
+                                With SynthQL, you can focus on building great
+                                products instead of spending time thinking about
+                                how to efficiently fetch data into your
                                 components.
                             </p>
 
                             <p>
                                 SynthQL reads your PostgreSQL database schema
-                                and generates types so you get type safety end
-                                to end.
+                                and generates types, so you get type safety
+                                end-to-end.
                             </p>
                         </div>
 
                         <div className="col col--6">
                             <CodeBlock language="typescript">
                                 {[
+                                    `// Compose your query using the query builder`,
                                     `const q = from('movies')`,
                                     `  .columns('id', 'title')`,
                                     `  .filter({ id: 1 })`,
-                                    `  .take(10);`,
+                                    `  .take(2);`,
                                     ``,
-                                    `// Execute the query`,
+                                    `// Executing the query via the React query client`,
                                     `const { data: movies } = useSynthql(q);`,
                                     ``,
-                                    `// movies is now `,
-                                    `// Array<{id: string, title:string}> `,
-                                    `console.log(movies[0].id)`,
+                                    `console.log(movies);`,
+                                    `// Will print:`,
+                                    `[`,
+                                    ` { id: 1, title: 'The Empire Strikes Back' },`,
+                                    `];`,
                                 ].join('\n')}
                             </CodeBlock>
                         </div>
@@ -194,50 +197,90 @@ const features: Array<{
     {
         title: 'End-to-end type safety',
         description:
-            'Generate types from your schema with a single command. Run in on your CI to ensure types are always up to date.',
-        link: '/docs/getting-started#generate-types',
-        code: [`npx @synthql/cli generate --url $DATABASE_URL`].join('\n'),
+            'Generate types from your schema with a single command. These types will then power the type-safety provided by the query builder. You should run this command on your CI to ensure that the types are always up to date.',
+        link: '/docs/generating-types',
+        code: [
+            `// Running the command:`,
+            `npx @synthql/cli generate --url $DATABASE_URL`,
+            ``,
+            `// generates a database types file like:`,
+            `
+export interface DB {
+    actor: {
+        columns: {
+            actor_id: {
+                type: number;
+                selectable: true;
+                includable: true;
+                whereable: true;
+                nullable: false;
+                isPrimaryKey: true;
+            };
+            first_name: {
+                type: string;
+                selectable: true;
+                includable: true;
+                whereable: true;
+                nullable: false;
+                isPrimaryKey: false;
+            };
+            last_name: {
+                type: string;
+                selectable: true;
+                includable: true;
+                whereable: true;
+                nullable: false;
+                isPrimaryKey: false;
+            };
+            last_update: {
+                type: string;
+                selectable: true;
+                includable: true;
+                whereable: true;
+                nullable: false;
+                isPrimaryKey: false;
+            };
+        };
+    }
+}
+
+// which in turn, allows you to create queries like:
+const q = from('actor')
+    .columns('actor_id', 'first_name', 'last_name')
+    .where({ actor_id: 1 })
+    .first();
+            `,
+        ].join('\n'),
     },
     {
         title: 'Composable query language',
         description:
-            'Build complex queries by composing smaller queries together. The SynthQL query language is designed for easy composition and re-use.',
+            'Build complex queries by composing smaller queries. The SynthQL query language is designed for easy composition and reusability.',
+        link: '/docs/query-language/composition',
         code: [
             `const findPetsByOwner = (owner) =>`,
             `    from('pets')`,
             `        .filter({ owner })`,
-            `        .many();`,
+            `        .all();`,
             ``,
             `const findPersonById = (id) => {`,
-            `    const pets = findPetsByOwner(id)`,
+            `    const pets = findPetsByOwner(id);`,
+            ``,
             `    return from('people')`,
             `        .filter({ id })`,
             `        .include({ pets })`,
-            `        .one()`,
-            `    }`,
+            `        .firstOrThrow();`,
+            `};`,
         ].join('\n'),
     },
     {
-        title: 'Built-in pagination & streaming',
-        code: [
-            `
-const query = from('users')
-    .filter({age: {gt:18}})
-    .take(100) // set the size of the page
-
-const {data, fetchNextPage} = useSynthql(query)`,
-        ].join('\n'),
+        title: 'Deferred queries',
         description: [
-            `Pagination in SynthQL just works! You don't need to do anything special to enable it!`,
-        ].join('\n'),
-    },
-    {
-        title: 'Lazy queries',
-        description: [
-            `As queries become bigger, latency also grows. Lazy queries help you split large object graphs to optimize page load.`,
+            `As queries grow in size, latency increases. Deferred queries allow you to split large object graphs, optimizing page load times.`,
             '',
-            'In the following example, we use a lazy query to load a store and its products separately. This means the store can load quickly and the products can load in the background.',
-            'This is especially useful when the products are not immediately visible on the page.',
+            'In the following example, we use a deferred query to load the store and its products separately. This allows the store to load quickly, while the products load in the background.',
+            '',
+            `This is particularly useful when the products aren't immediately visible on the page.`,
         ].join('\n'),
         link: '/docs/deferred-queries',
         code: `
@@ -246,8 +289,8 @@ const products = from('products')
     .filter({
         product_id: { in: col('store.product_ids') }
     })
-    .lazy()
-    .many()
+    .defer()
+    .all();
 
 const query = from('store')
     .column('id', 'name')
@@ -255,56 +298,61 @@ const query = from('store')
     .include({
         products
     })
+    .all();
 
-// Over the network, this results in two JSON lines
-[{ id: "store 1", name: "Fancy store", products: { status: 'pending' } }]
-[{ id: "store 1", name: "Fancy store", products: { status: "done", data: [...] } }]
-            `,
+/* This returns two JSON lines */
+
+// First line of JSON
+[{ "id": "1", "name": "Fancy store", "products": { "status": "pending" }}]
+
+// Once the products have loaded
+[{ "id": "1", "name": "Fancy store", "products": { "status": "done", "data": [{ "id": "1", "name": "Shoe", "price": 199 }]}}]
+        `,
     },
 
     {
         title: 'Security',
         link: '/docs/security',
         description:
-            'SynthQL offers a number of security features to help you secure your application. This includes built-in authentication, query whitelisting, and more.',
+            'SynthQL offers several security features to help secure your application, including built-in authentication, query whitelisting, and more.',
         code: `
 const findPetsByOwner = (ownerId) => {
     return from('pets')
-        .column('name','id')
+        .column('name', 'id')
         .filter({ ownerId })
-        .requires('pets:read')
-        .many()
-}
+        .permissions('users:read', 'pets:read')
+        .all();
+};
 
 const findPersonByIds = (ids) => {
     return from('people')
         .column('first_name','last_name')
-        .requires('person:read')
-        .filter({id:{in:ids}})
+        .filter({ id: { in: ids }})
+        .permissions('person:read')
         .include({
             films: findPetsByOwner(col('people.id'))
         })
-        .many()
-}`,
+        .all();
+};`,
     },
 
     {
         title: 'Custom query providers',
         link: '/docs/custom-providers',
         description:
-            'Not all data comes from the database. Use custom providers to join your DB tables with data from 3rd party APIs using a predictable performance model.',
+            'Not all data comes from the database. Use custom providers to join your database tables with data from third-party APIs, ensuring predictable performance.',
         code: `
 const findFilmsWithRatings = () => {
     const ratings = from('rotten_tomatoes_ratings')
         .filter({
-            year:col('film.year')
+            year: col('film.year')
         })
-        .many()
+        .all();
 
     return from('films')
         .filter({ year: 1965 })
         .include({ ratings })
-        .many()
-}`,
+        .all();
+};`,
     },
 ];

@@ -55,8 +55,8 @@ describe('useSynthql', () => {
     });
 
     test('Fetching a single row from the Pagila database with all selectable columns auto-selected', async () => {
-        // @@start-example@@ Find a single actor by id with all selectable columns auto-selected
-        // @@desc@@ Finds 0 or 1 record(s) in the `actors` table where the `id` is in the list of ids and return all selectable columns
+        // @@start-example@@ Find a single actor by ID with all selectable columns auto-selected
+        // @@desc@@ Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and return all selectable columns
 
         const q = from('actor')
             .where({ actor_id: { in: [1] } })
@@ -80,8 +80,8 @@ describe('useSynthql', () => {
     }, 1000);
 
     test('Fetching 0 or 1 rows(s) from the Pagila database with columns to return specified', async () => {
-        // @@start-example@@ Find a single actor by id with columns to return specified`
-        // @@desc@@ Finds 0 or 1 record(s) in the `actors` table where the `id` is in the list of ids, and returns all selectable columns passed
+        // @@start-example@@ Find a single actor by ID with columns to return specified`
+        // @@desc@@ Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and returns all selected columns
 
         const q = from('actor')
             .columns('actor_id', 'first_name', 'last_name')
@@ -220,7 +220,7 @@ describe('useSynthql', () => {
         ]);
     }, 1000);
 
-    test('Fetching n rows from the Pagila database with columns to return specified', async () => {
+    test('Fetching `n` rows from the Pagila database with columns to return specified', async () => {
         const count = 10;
         const ids = Array(count)
             .fill(0)
@@ -302,8 +302,8 @@ describe('useSynthql', () => {
     }, 1000);
 
     test('Fetching a single result from the Pagila database with single-level-deep nested data', async () => {
-        // @@start-example@@ Find a single actor by id with a single-level-deep `include()`
-        // @@desc@@ Finds 1 record in the `customers` table where the `id` is in the list of ids
+        // @@start-example@@ Find a single actor by ID with a single-level-deep `include()`
+        // @@desc@@ Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
         const store = from('store')
             .columns(
@@ -356,8 +356,8 @@ describe('useSynthql', () => {
     }, 1000);
 
     test('Fetching a single result from the Pagila database with two-level-deep nested data', async () => {
-        // @@start-example@@ Find a single customer by id with a two-level-deep `include()`
-        // @@desc@@ Finds 1 record in the `customers` table where the `id` is in the list of ids
+        // @@start-example@@ Find a single customer by ID with a two-level-deep `include()`
+        // @@desc@@ Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
         const address = from('address')
             .columns(
@@ -432,8 +432,8 @@ describe('useSynthql', () => {
     }, 1000);
 
     test('Fetching a single result from the Pagila database with three-level-deep nested data', async () => {
-        // @@start-example@@ Find a single customer by id with a three-level-deep `include()`
-        // @@desc@@ Finds 1 record in the `customers` table where the `id` is in the list of ids
+        // @@start-example@@ Find a single customer by ID with a three-level-deep `include()`
+        // @@desc@@ Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
         const city = from('city')
             .columns('city_id', 'country_id', 'city', 'last_update')
@@ -522,8 +522,8 @@ describe('useSynthql', () => {
     }, 1000);
 
     test('Fetching a single result from the Pagila database with four-level-deep nested data', async () => {
-        // @@start-example@@ Find a single customer by id with a four-level-deep `include()`
-        // @@desc@@ Finds 1 record in the `customers` table where the `id` is in the list of ids
+        // @@start-example@@ Find a single customer by ID with a four-level-deep `include()`
+        // @@desc@@ Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
         const country = from('country')
             .columns('country_id', 'country', 'last_update')

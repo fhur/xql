@@ -1,8 +1,8 @@
 # Examples
 
-## Find a single actor by id with all selectable columns auto-selected
+## Find a single actor by ID with all selectable columns auto-selected
 
-Finds 0 or 1 record(s) in the `actors` table where the `id` is in the list of ids and return all selectable columns
+Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and return all selectable columns
 
 ```ts
 const q = from('actor')
@@ -10,9 +10,9 @@ const q = from('actor')
     .one();
 ```
 
-## Find a single actor by id with columns to return specified`
+## Find a single actor by ID with columns to return specified`
 
-Finds 0 or 1 record(s) in the `actors` table where the `id` is in the list of ids, and returns all selectable columns passed
+Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and returns all selected columns
 
 ```ts
 const q = from('actor')
@@ -70,9 +70,9 @@ const q = from('actor')
     .many();
 ```
 
-## Find a single actor by id with a single-level-deep `include()`
+## Find a single actor by ID with a single-level-deep `include()`
 
-Finds 1 record in the `customers` table where the `id` is in the list of ids
+Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
 ```ts
 const store = from('store')
@@ -96,9 +96,9 @@ const q = from('customer')
     .one();
 ```
 
-## Find a single customer by id with a two-level-deep `include()`
+## Find a single customer by ID with a two-level-deep `include()`
 
-Finds 1 record in the `customers` table where the `id` is in the list of ids
+Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
 ```ts
 const address = from('address')
@@ -130,9 +130,9 @@ const q = from('customer')
     .one();
 ```
 
-## Find a single customer by id with a three-level-deep `include()`
+## Find a single customer by ID with a three-level-deep `include()`
 
-Finds 1 record in the `customers` table where the `id` is in the list of ids
+Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
 ```ts
 const city = from('city')
@@ -172,9 +172,9 @@ const q = from('customer')
     .one();
 ```
 
-## Find a single customer by id with a four-level-deep `include()`
+## Find a single customer by ID with a four-level-deep `include()`
 
-Finds 1 record in the `customers` table where the `id` is in the list of ids
+Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
 ```ts
 const country = from('country')
