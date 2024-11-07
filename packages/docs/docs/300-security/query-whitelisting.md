@@ -14,7 +14,7 @@ const queryEngine = new QueryEngine({...})
 queryEngine.registerQuery(findAllActiveUsers())
 
 // The QueryEngine will now only execute the registered queries
-queryEngine.execute(findAllActiveUsers(), { context })
+const result = await queryEngine.executeAndWait(findAllActiveUsers(), { context });
 ```
 
 ## Why registered queries?
@@ -25,7 +25,7 @@ When you build a traditional REST API, you implicitly "register queries" by defi
 
 ## How to register queries
 
-Registering queries is simple. All you need to do is pass the query to the `QueryBuilder#registerQueries` or `QueryEngine#registerQuery` methods.
+Registering queries is simple. All you need to do is pass the query to the `QueryBuilder#registerQueries` method.
 
 As some queries take parameters, you will need to pass a placeholder value when you register the query.
 
@@ -47,7 +47,7 @@ const queryEngine = new QueryEngine({...})
 queryEngine.registerQuery(findUserById(0))
 
 // You can now invoke the query with any value
-queryEngine.execute(findUserById(anyUserId))
+const result = await queryEngine.executeAndWait(findUserById(anyUserId))
 ```
 
 ## Queries with conditional logic
@@ -76,12 +76,14 @@ The problem with these types of queries is that they actually return two differe
 To register these types of queries correctly, you will need to register each variant of the query individually.
 
 ```ts
-const queryEngine = new QueryEngine({...})
+const queryEngine = new QueryEngine({
+    url: process.env.DATABASE_URL,
+});
 
 queryEngine.registerQueries([
     findUsersByStatus('active'),
-    findUsersByStatus('inactive')
-])
+    findUsersByStatus('inactive'),
+]);
 ```
 
 ## The security of registered queries

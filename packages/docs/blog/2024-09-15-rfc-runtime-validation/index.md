@@ -106,6 +106,8 @@ const validateQueryResult = createValidator({
 });
 
 const queryEngine = new QueryEngine();
-const queryResult = queryEngine.executeAndWait(query);
+
+const queryResult = await queryEngine.executeAndWait(query);
+
 validateQueryResult(queryResult);
 ```

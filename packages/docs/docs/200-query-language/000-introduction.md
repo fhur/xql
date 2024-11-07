@@ -5,7 +5,7 @@ SynthQL comes with a simple, but powerful query language. Let's see a few exampl
 ## Find user by ID
 
 ```ts
-import { from } from './db';
+import { from } from './generated';
 
 const users = from('users').columns('id', 'name');
 
@@ -16,8 +16,8 @@ export function findUserById(id: string) {
 
 ## Find users by IDs
 
-```tsx
-import { from } from './db';
+```ts
+import { from } from './generated';
 
 const users = from('users').columns('id', 'name');
 
@@ -28,8 +28,8 @@ export function findUserById(ids: string[]) {
 
 ## Find users with pets (1 to n relation)
 
-```tsx
-import { from } from './db';
+```ts
+import { from } from './generated';
 
 const pets = from('pets').columns('id', 'name', 'owner_id');
 

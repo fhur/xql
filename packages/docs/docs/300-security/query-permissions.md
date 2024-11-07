@@ -49,8 +49,11 @@ In this example, the user needs to have the `users:read` and `pets:read` permiss
 When you execute a query, you can pass a `context` object. This object is used to pass additional information to the query, such as the user's permissions.
 
 ```ts
+// You want to generate this from some source, e.g. parsing the cookie sent with a HTTP request
 const context = { permissions: ['users:read', 'pets:read'] };
-queryEngine.execute(query, { context });
+
+// Execute the query
+const result = await queryEngine.executeAndWait(query, { context });
 ```
 
 The query engine will traverse the query recursively and reject the query unless it meets all the ACL requirements.

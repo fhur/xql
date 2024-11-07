@@ -17,15 +17,15 @@ To improve the latency of this page, you can mark the `products` query with `.de
 ```tsx
 const products = from('products')
     .column('id', 'name', 'price')
-    .defer() // <======= this marks the products query as deferred
+    .defer() // <======= this marks the `products` query to be deferred during execution
     .many();
 
 const query = from('store').column('store_name', 'store_owner').include({
     products,
 });
 
-// Executing the query via the React query client
-useSynthql(query);
+// Execute the query
+const result = queryEngine.execute(query);
 ```
 
 Marking the `products` subquery with `.defer()` will result in the query client first fetching the `store`, and then re-rendering the component once the data from the `products` comes in.
@@ -35,9 +35,9 @@ Marking the `products` subquery with `.defer()` will result in the query client 
 When the `QueryEngine` executes a query, it will flush results 'early' to the client whenever it encounters a `.defer()` boundary. In this example, this will result in two lines of JSON being sent to the client over the same HTTP connection, as shown below:
 
 ```json
-// First line of JSON
+// First line of JSON:
 [{ "store_name": "Fun Inc.", "store_owner": "Bob", "products": { "status": "pending" }}]
 
-// Once the products have loaded
-[{ "store_name": "Toys Inc.", "store_owner": "Bill", "products": { "status": "done", "data": [{ "id": 1, "name": "Shoe", "price": 199 }]}}]
+// Once the products have loaded:
+[{ "store_name": "Toys Inc.", "store_owner": "Bill", "products": { "status": "done", "data": [{ "id": 1, "name": "Shoe", "price": 199 }] }}]
 ```

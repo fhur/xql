@@ -1,7 +1,7 @@
 import CodeBlock from '@theme/CodeBlock';
-import Link from '@docusaurus/Link';
-import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import Layout from '@theme/Layout';
+import Link from '@docusaurus/Link';
 
 export default function Home(): JSX.Element {
     return (
@@ -98,8 +98,8 @@ export default function Home(): JSX.Element {
                                     `  .filter({ id: 1 })`,
                                     `  .take(2);`,
                                     ``,
-                                    `// Executing the query via the React query client`,
-                                    `const { data: movies } = useSynthql(q);`,
+                                    `// Executing the query`,
+                                    `const { data: movies } = queryEngine.executeAndWait(q);`,
                                     ``,
                                     `console.log(movies);`,
                                     `// Will print:`,
@@ -302,11 +302,11 @@ const query = from('store')
 
 /* This returns two JSON lines */
 
-// First line of JSON
+// First line of JSON:
 [{ "id": "1", "name": "Fancy store", "products": { "status": "pending" }}]
 
-// Once the products have loaded
-[{ "id": "1", "name": "Fancy store", "products": { "status": "done", "data": [{ "id": "1", "name": "Shoe", "price": 199 }]}}]
+// Once the products have loaded:
+[{ "id": "1", "name": "Fancy store", "products": { "status": "done", "data": [{ "id": "1", "name": "Shoe", "price": 199 }] }}]
         `,
     },
 

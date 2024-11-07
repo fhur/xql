@@ -9,7 +9,7 @@ In the context of security, query middlewares can be used to add additional chec
 You can add a middleware to the query engine as follows:
 
 ```ts
-import { DB } from './db';
+import { DB } from './generated';
 import { QueryEngine, mapQuery } from '@synthql/backend';
 import { orders } from './queries';
 
