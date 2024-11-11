@@ -1,8 +1,24 @@
 # Examples
 
-## Find a single actor by ID with all selectable columns auto-selected
+## Find 1 actor, with all selectable columns auto-selected, and no filters specified
 
-Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and return all selectable columns
+Finds 1 record in the `actor` table
+
+```ts
+const q = from('actor').firstOrThrow();
+```
+
+## Find 0 or 1 actor(s), with all selectable columns auto-selected, and no filters specified
+
+Finds 0 or 1 record(s) in the `actor` table
+
+```ts
+const q = from('actor').first();
+```
+
+## Find 1 actor by ID, with all selectable columns auto-selected
+
+Finds 1 record in the `actor` table where the `actor_id` is in the list of IDs passed, and returns all selectable columns
 
 ```ts
 const q = from('actor')
@@ -10,60 +26,19 @@ const q = from('actor')
     .firstOrThrow();
 ```
 
-## Find a single actor by ID with columns to return specified
+## Find 0 or 1 actor(s) by ID, with all selectable columns auto-selected
 
-Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and returns all selected columns
+Finds 0 or 1 record(s) in the `actor` table where the `actor_id` is in the list of IDs passed, and returns all selectable columns
 
 ```ts
 const q = from('actor')
-    .columns('actor_id', 'first_name', 'last_name')
     .filter({ actor_id: { in: [1] } })
     .first();
 ```
 
-## Find a single actor with no filters specified
+## Find 0 through n actor(s) by IDs, with columns to return specified
 
-Finds 0 or 1 record(s) in the `actors` table
-
-```ts
-const q = from('actor')
-    .columns('actor_id', 'first_name', 'last_name')
-    .firstOrThrow();
-```
-
-## Find a single actor with offset value specified
-
-Finds 0 or 1 record(s) in the `actors` starting from the offset value position
-
-```ts
-const q = from('actor')
-    .columns('actor_id', 'first_name', 'last_name')
-    .offset(1)
-    .firstOrThrow();
-```
-
-## Find a single actor with limit of results to return specified
-
-Finds n record(s) in the `actors`, where `n` is the value passed to `limit()`
-
-```ts
-const q = from('actor')
-    .columns('actor_id', 'first_name', 'last_name')
-    .limit(2)
-    .all();
-```
-
-## Find a single actor with number of results to take specified
-
-Finds n record(s) in the `actors`, where `n` is the value passed to `take()`
-
-```ts
-const q = from('actor').columns('actor_id', 'first_name', 'last_name').take(2);
-```
-
-## Find all actors by ids columns to return specified
-
-Finds all the records in the `actors` table where their `actor_id` is in the list of IDs passed, and returns all selected columns
+Finds 0 through n record(s) in the `actor` table where their `actor_id` is in the list of IDs passed, and returns all selected columns
 
 ```ts
 const q = from('actor')
@@ -72,7 +47,31 @@ const q = from('actor')
     .all();
 ```
 
-## Find a single actor by ID with a single-level-deep `include()`
+## Find 0 through n actor(s) with `limit(n)` of results to return specified
+
+Finds 0 through n record(s) in the `actor` table, where `n` is the value passed to `limit()`
+
+```ts
+const q = from('actor').limit(2).all();
+```
+
+## Find 0 through n actor(s) with number of results to `take(n)` (shorthand for `.limit(n).all()`) specified
+
+Finds 0 through n record(s) in the `actor` table, where `n` is the value passed to `take()`
+
+```ts
+const q = from('actor').take(2);
+```
+
+## Find 1 actor with offset value specified
+
+Finds 1 record in the `actor` table, starting from the offset value position
+
+```ts
+const q = from('actor').offset(1).firstOrThrow();
+```
+
+## Find 1 customer by ID with a single-level-deep `include()`
 
 Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
@@ -98,7 +97,7 @@ const q = from('customer')
     .firstOrThrow();
 ```
 
-## Find a single customer by ID with a two-level-deep `include()`
+## Find 1 customer by ID with a two-level-deep `include()`
 
 Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
@@ -132,7 +131,7 @@ const q = from('customer')
     .firstOrThrow();
 ```
 
-## Find a single customer by ID with a three-level-deep `include()`
+## Find 1 customer by ID with a three-level-deep `include()`
 
 Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 
@@ -174,7 +173,7 @@ const q = from('customer')
     .firstOrThrow();
 ```
 
-## Find a single customer by ID with a four-level-deep `include()`
+## Find 1 customer by ID with a four-level-deep `include()`
 
 Finds 1 record in the `customers` table where the `actor_id` is in the list of IDs passed
 

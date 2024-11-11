@@ -70,7 +70,7 @@ export default function Home(): JSX.Element {
 
                             <p>
                                 SynthQL is a full-stack HTTP client for your
-                                PostgreSQL database. It lets you declaratively
+                                PostgreSQL database. It allows you declaratively
                                 describe your client components' data
                                 dependencies.
                             </p>

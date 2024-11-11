@@ -1,43 +1,57 @@
 # Query middlewares
 
-Query middlewares are functions that are executed before a query is executed. They can be used to add additional functionality to the query, such as logging, caching, or authentication.
+Query middlewares are functions that are run before a query is executed. They can be used to add additional functionality to the query, such as logging, caching, or authentication.
 
-In the context of security, query middlewares can be used to add additional checks on every query, or limit the result set.
+In the context of security, query middlewares can be used to add additional checks to every query or limit the result set.
 
 ## Adding a middleware
 
-You can add a middleware to the `QueryEngine` as follows:
+In this example, we're creating a middleware that will act on every query to the `payment` table and add a filter to the `customer_id` column.
 
 ```ts
+// index.ts
 import { DB } from './generated';
-import { QueryEngine, mapQuery } from '@synthql/backend';
-import { orders } from './queries';
+import { QueryEngine, middleware } from '@synthql/backend';
+import { Query } from '@synthql/queries';
+import { payments } from './queries';
 
-const restrictOrdersByUser = middleware<DB>()
-    .from('orders')
-    .mapQuery((query, context) => {
-        const userId = context.user.id;
-        return {
-            context,
-            query: {
-                ...query,
-                // transforms the `where` to ensure that only orders can be read from the
-                // current user.
-                where: {
-                    ...query.where,
-                    user_id: userId,
-                },
-            },
-        };
-    });
+// Create types & interface for context
+type UserRole = 'user' | 'admin' | 'super';
 
+type UserPermission = 'user:read' | 'admin:read' | 'super:read';
+
+interface Session {
+    id: number;
+    email: string;
+    isActive: boolean;
+    roles: UserRole[];
+    permissions: UserPermission[];
+}
+
+// Create middleware
+const restrictPaymentsByCustomer = middleware<Query<DB, 'payments'>, Session>({
+    predicate: ({ query, context }) =>
+        query?.from === 'payments' &&
+        context?.roles?.includes('user') &&
+        context?.isActive,
+    transformQuery: ({ query, context }) => ({
+        ...query,
+        where: {
+            ...query.where,
+            customer_id: context.id,
+        },
+    }),
+});
+
+// Initialize query engine and register middleware
 const queryEngine = new QueryEngine<DB>({
-    middlewares: [restrictOrdersByUser],
+    url: 'postgresql://user:password@localhost:5432/dbname',
+    middlewares: [restrictPaymentsByCustomer],
 });
 ```
 
 ## When are middlewares executed?
 
-When a query is executed, the ID check is performed first, and then the parameters are substituted. Then the middleware is executed.
+When a query is executed, a hash check is performed first (if query whitelisting is enabled), followed by the substitution of any parameterized fields. After that, the middleware is executed.
 
-This ensures that the middleware can inject additional parameters to the query as it's now happening in a safe context.
+This ensures that the middleware can inject additional parameters into the query, as it is now happening in a safe context.

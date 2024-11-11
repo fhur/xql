@@ -1,24 +1,26 @@
 # Query permissions
 
-SynthQL uses a declarative approach to define what permissions are required to run a query. This approach is both simple and powerful, and makes it easy to understand what permissions are required to run a query.
+SynthQL uses a declarative approach to define the permissions required to run a query.
 
-With SynthQL you don't need to sprinkle your code with permission assertions or `if` conditions to check for permissions, instead you define on a per-query basis what permissions are required to run the query, and the QueryEngine will take care of the rest.
+With SynthQL, you don't need to sprinkle your code with permission assertions or `if` conditions to check for permissions. Instead, you define, on a per-query basis, which permissions are required to run the query, and the `QueryEngine` takes care of the rest.
+
+This approach is both simple and very powerful.
 
 ## Defining permissions
 
-The `.permissions()` method is used to define what permissions are required to run a query.
+The `.permissions()` method is used to define which permissions are required to run a query.
 
 ```ts
 from('users').permissions('users:read').all();
 ```
 
-The `.permissions(...roles:string[])` method takes a list of roles. Roles can be any string.
+The `.permissions(...roles: string[])` method takes a list of roles, where each role is a string.
 
 ```ts
 from('users').permissions('users:read', 'users:write').all();
 ```
 
-You can use an TypeScript enum to define the list of permissions and get extra type safety:
+You can use a TypeScript enum to define the list of permissions and gain extra type safety.
 
 ```ts
 enum Permissions {
@@ -33,7 +35,7 @@ const query = from('users')
 
 ## Role inheritance
 
-When you include a sub-query, the permissions add up. This means the user needs to have all the permissions of both the parent and sub-query to be able to execute.
+When you include a sub-query, the permissions accumulate. This means the user needs to have all the permissions of both the parent and sub-query in order to execute the query.
 
 ```ts
 const pets = from('pets')
@@ -44,11 +46,11 @@ const pets = from('pets')
 const query = from('users').permissions('users:read').include({ pets }).all();
 ```
 
-In this example, the user needs to have the `users:read` and `pets:read` permissions to execute the query.
+In this example, the user needs to have both the `users:read` and `pets:read` permissions to execute the query.
 
 ## Query context
 
-When you execute a query, you can pass a query `context` object. This object is used to pass additional information to the query, such as the user's permissions.
+When you execute a query, you can pass a `context` object. This object is used to provide additional information to the query, such as the user's permissions.
 
 ```ts
 // You want to generate this from some source, e.g. parsing the cookie sent with a HTTP request
@@ -62,4 +64,4 @@ The `QueryEngine` will traverse the query recursively and reject it unless it me
 
 ## What of query whitelisting (i.e. `registerQueries()`)?
 
-When a query is added to the whitelist using `registerQueries()`, it is registered along with its permissions. This means a malicious client cannot modify the ACL requirements of a query.
+When a query is added to the whitelist using `registerQueries()`, it is registered along with its permissions. This ensures that a malicious client cannot modify the ACL requirements of the query.

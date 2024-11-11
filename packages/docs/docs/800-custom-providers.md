@@ -82,7 +82,7 @@ const queryEngine = new QueryEngine({
 });
 ```
 
-This lets you build queries like:
+This allows you build queries like:
 
 ```ts
 export function findFilm(id: number) {

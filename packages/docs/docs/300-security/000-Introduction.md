@@ -6,7 +6,7 @@ Let’s take a look at the different ways SynthQL ensures that only the right qu
 
 ## Whitelisting queries
 
-By default, the `QueryEngine` will not execute any queries. It will only execute known queries. To register a query, simply call the `registerQueries()` method as follows:
+By default, the `QueryEngine` will not execute any queries. It will only execute whitelisted queries. To register a query (add it to the whitelist), simply call the `registerQueries()` method as follows:
 
 ```ts
 import { from } from './generated';
@@ -155,7 +155,4 @@ const queryEngine = new QueryEngine<DB>({
     url: 'postgresql://user:password@localhost:5432/dbname',
     middlewares: [restrictPaymentsByCustomer],
 });
-
-// Register query
-queryEngine.registerQueries([payments]);
 ```

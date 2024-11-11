@@ -4,7 +4,7 @@
 
 One of the disadvantages of large query trees is that they result in proportionally longer latencies. The reason is simple: you have to wait for the entire query tree to load before you can send the response back to the client. So the bigger the query, the longer the wait time.
 
-To mitigate this issue, SynthQL lets you mark parts of your query tree with `.defer()`. A `.defer()` boundary will split your query into two and will tell the `QueryEngine` to flush results to the client in sequences.
+To mitigate this issue, SynthQL allows you mark parts of your query tree with `.defer()`. A `.defer()` boundary will split your query into two and will tell the `QueryEngine` to flush results to the client in sequences.
 
 This feature is similar to [GraphQL's @defer directive](https://graphql.org/blog/2020-12-08-improving-latency-with-defer-and-stream-directives/).
 

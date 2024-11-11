@@ -1,14 +1,12 @@
 # Query composition & reuse
 
-In my opinion one of the bigger issues with SQL is the fact that you cannot compose larger queries from simpler queries.
+Although SQL supports query composition through JOINs, UNIONs, and subqueries, the readability and maintainability of large composite queries can be a challenge.
 
-Effectively this means that it is impossible to share SQL fragments between queries, so if you have a `person` query and a `pet` query, to make a `pet` with `person` query you have to make a completely different query.
+SynthQL is designed for this kind of composition and allows you achieve this in several ways. Let's look at a few examples:
 
-SynthQL is designed for composition and lets you achieve this in several ways. Let's see a few examples:
+## Defining views
 
-## Defining fragments
-
-The first step towards reusable queries is to be able to give a name to a table + columns. I call these `fragments` and they can be defined as follows
+The first step towards reusable queries is to be able to give a name to a table and its columns. These are called `views`, and they can be defined as follows:
 
 ```ts
 // A view over the pets table
@@ -25,7 +23,7 @@ const personDetailed = from('person')
     });
 ```
 
-Once you have views, you can easily turn these into queries as follows:
+Once you have views, you can easily convert them into queries as follows:
 
 ```ts
 function findPetById(id: number) {
