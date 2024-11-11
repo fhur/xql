@@ -6,7 +6,7 @@ In the context of security, query middlewares can be used to add additional chec
 
 ## Adding a middleware
 
-You can add a middleware to the query engine as follows:
+You can add a middleware to the `QueryEngine` as follows:
 
 ```ts
 import { DB } from './generated';

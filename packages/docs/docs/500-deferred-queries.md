@@ -18,7 +18,7 @@ To improve the latency of this page, you can mark the `products` query with `.de
 const products = from('products')
     .column('id', 'name', 'price')
     .defer() // <======= this marks the `products` query to be deferred during execution
-    .many();
+    .all();
 
 const query = from('store').column('store_name', 'store_owner').include({
     products,

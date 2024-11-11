@@ -14,15 +14,9 @@ import { QueryEngine } from '@synthql/backend';
 
 const users = from('users').columns('id', 'name', 'email').all();
 
-// Ensure DATABASE_URL is set in your .env file:
-// DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL environment variable is required!');
-}
-
 // Initialize query engine
 const queryEngine = new QueryEngine({
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://user:password@localhost:5432/dbname',
 });
 
 // Register query
@@ -35,7 +29,7 @@ This feature can be disabled with the `dangerouslyAllowUnregisteredQueries` opti
 
 ```ts
 const queryEngine = new QueryEngine({
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://user:password@localhost:5432/dbname',
     dangerouslyAllowUnregisteredQueries: true,
 });
 ```
@@ -55,7 +49,7 @@ const pets = from('pets')
     .columns('id', 'owner_id')
     .permissions('pets:read')
     .include({
-        owner: users.where({ owner_id: col('users.id') }).first(),
+        owner: users.filter({ owner_id: col('users.id') }).first(),
     })
     .all();
 ```
@@ -76,7 +70,14 @@ const context = {
 const result = await queryEngine.executeAndWait(pets, { context });
 ```
 
-The query engine will traverse the query recursively and reject it unless it meets all the ACL requirements.
+The `QueryEngine` will traverse the query recursively and reject it unless it meets all the ACL requirements. However, if you don't want these permissions (ACL requirements) to be checked, you can set the `dangerouslyIgnorePermissions` option when initializing the `QueryEngine`.
+
+```ts
+const queryEngine = new QueryEngine({
+    url: 'postgresql://user:password@localhost:5432/dbname',
+    dangerouslyIgnorePermissions: true,
+});
+```
 
 ## Restricting access to rows
 
@@ -89,7 +90,7 @@ First, we define the schema:
 const payments = from('payments')
     .columns('id', 'total_amount', 'product_ids', 'customer_id')
     .permissions('payments:read')
-    .many();
+    .all();
 ```
 
 Now, let's examine the following query. Note that this query will select all orders.
@@ -151,7 +152,7 @@ const restrictPaymentsByCustomer = middleware<Query<DB, 'payments'>, Session>({
 
 // Initialize query engine and register middleware
 const queryEngine = new QueryEngine<DB>({
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://user:password@localhost:5432/dbname',
     middlewares: [restrictPaymentsByCustomer],
 });
 

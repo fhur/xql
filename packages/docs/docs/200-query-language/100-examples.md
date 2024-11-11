@@ -6,19 +6,19 @@ Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list
 
 ```ts
 const q = from('actor')
-    .where({ actor_id: { in: [1] } })
-    .one();
+    .filter({ actor_id: { in: [1] } })
+    .firstOrThrow();
 ```
 
-## Find a single actor by ID with columns to return specified`
+## Find a single actor by ID with columns to return specified
 
 Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and returns all selected columns
 
 ```ts
 const q = from('actor')
     .columns('actor_id', 'first_name', 'last_name')
-    .where({ actor_id: { in: [1] } })
-    .maybe();
+    .filter({ actor_id: { in: [1] } })
+    .first();
 ```
 
 ## Find a single actor with no filters specified
@@ -26,7 +26,9 @@ const q = from('actor')
 Finds 0 or 1 record(s) in the `actors` table
 
 ```ts
-const q = from('actor').columns('actor_id', 'first_name', 'last_name').one();
+const q = from('actor')
+    .columns('actor_id', 'first_name', 'last_name')
+    .firstOrThrow();
 ```
 
 ## Find a single actor with offset value specified
@@ -37,7 +39,7 @@ Finds 0 or 1 record(s) in the `actors` starting from the offset value position
 const q = from('actor')
     .columns('actor_id', 'first_name', 'last_name')
     .offset(1)
-    .one();
+    .firstOrThrow();
 ```
 
 ## Find a single actor with limit of results to return specified
@@ -48,7 +50,7 @@ Finds n record(s) in the `actors`, where `n` is the value passed to `limit()`
 const q = from('actor')
     .columns('actor_id', 'first_name', 'last_name')
     .limit(2)
-    .many();
+    .all();
 ```
 
 ## Find a single actor with number of results to take specified
@@ -59,15 +61,15 @@ Finds n record(s) in the `actors`, where `n` is the value passed to `take()`
 const q = from('actor').columns('actor_id', 'first_name', 'last_name').take(2);
 ```
 
-## Find all actors by ids columns to return specified`
+## Find all actors by ids columns to return specified
 
-Finds all the records in the `actors` table where their `id` is in the list of ids, and returns all selectable columns passed
+Finds all the records in the `actors` table where their `actor_id` is in the list of IDs passed, and returns all selected columns
 
 ```ts
 const q = from('actor')
     .columns('actor_id', 'first_name', 'last_name')
-    .where({ actor_id: { in: ids } })
-    .many();
+    .filter({ actor_id: { in: ids } })
+    .all();
 ```
 
 ## Find a single actor by ID with a single-level-deep `include()`
@@ -77,10 +79,10 @@ Finds 1 record in the `customers` table where the `actor_id` is in the list of I
 ```ts
 const store = from('store')
     .columns('store_id', 'address_id', 'manager_staff_id', 'last_update')
-    .where({
+    .filter({
         store_id: col('customer.store_id'),
     })
-    .one();
+    .firstOrThrow();
 
 const q = from('customer')
     .columns(
@@ -91,9 +93,9 @@ const q = from('customer')
         'email',
         'last_update',
     )
-    .where({ customer_id: { in: [1] } })
+    .filter({ customer_id: { in: [1] } })
     .include({ store })
-    .one();
+    .firstOrThrow();
 ```
 
 ## Find a single customer by ID with a two-level-deep `include()`
@@ -103,18 +105,18 @@ Finds 1 record in the `customers` table where the `actor_id` is in the list of I
 ```ts
 const address = from('address')
     .columns('address_id', 'city_id', 'address', 'district', 'last_update')
-    .where({
+    .filter({
         address_id: col('store.address_id'),
     })
-    .one();
+    .firstOrThrow();
 
 const store = from('store')
     .columns('store_id', 'address_id', 'manager_staff_id', 'last_update')
-    .where({
+    .filter({
         store_id: col('customer.store_id'),
     })
     .include({ address })
-    .one();
+    .firstOrThrow();
 
 const q = from('customer')
     .columns(
@@ -125,9 +127,9 @@ const q = from('customer')
         'email',
         'last_update',
     )
-    .where({ customer_id: { in: [4] } })
+    .filter({ customer_id: { in: [4] } })
     .include({ store })
-    .one();
+    .firstOrThrow();
 ```
 
 ## Find a single customer by ID with a three-level-deep `include()`
@@ -137,26 +139,26 @@ Finds 1 record in the `customers` table where the `actor_id` is in the list of I
 ```ts
 const city = from('city')
     .columns('city_id', 'country_id', 'city', 'last_update')
-    .where({
+    .filter({
         city_id: col('address.city_id'),
     })
-    .one();
+    .firstOrThrow();
 
 const address = from('address')
     .columns('address_id', 'city_id', 'address', 'district', 'last_update')
-    .where({
+    .filter({
         address_id: col('store.address_id'),
     })
     .include({ city })
-    .one();
+    .firstOrThrow();
 
 const store = from('store')
     .columns('store_id', 'address_id', 'manager_staff_id', 'last_update')
-    .where({
+    .filter({
         store_id: col('customer.store_id'),
     })
     .include({ address })
-    .one();
+    .firstOrThrow();
 
 const q = from('customer')
     .columns(
@@ -167,9 +169,9 @@ const q = from('customer')
         'email',
         'last_update',
     )
-    .where({ customer_id: { in: [4] } })
+    .filter({ customer_id: { in: [4] } })
     .include({ store })
-    .one();
+    .firstOrThrow();
 ```
 
 ## Find a single customer by ID with a four-level-deep `include()`
@@ -179,34 +181,34 @@ Finds 1 record in the `customers` table where the `actor_id` is in the list of I
 ```ts
 const country = from('country')
     .columns('country_id', 'country', 'last_update')
-    .where({
+    .filter({
         country_id: col('city.country_id'),
     })
-    .one();
+    .firstOrThrow();
 
 const city = from('city')
     .columns('city_id', 'city', 'country_id', 'last_update')
-    .where({
+    .filter({
         city_id: col('address.city_id'),
     })
     .include({ country })
-    .one();
+    .firstOrThrow();
 
 const address = from('address')
     .columns('address_id', 'city_id', 'address', 'district', 'last_update')
-    .where({
+    .filter({
         address_id: col('store.address_id'),
     })
     .include({ city })
-    .one();
+    .firstOrThrow();
 
 const store = from('store')
     .columns('store_id', 'address_id', 'manager_staff_id', 'last_update')
-    .where({
+    .filter({
         store_id: col('customer.store_id'),
     })
     .include({ address })
-    .one();
+    .firstOrThrow();
 
 const q = from('customer')
     .columns(
@@ -217,7 +219,7 @@ const q = from('customer')
         'email',
         'last_update',
     )
-    .where({ customer_id: { in: [4] } })
+    .filter({ customer_id: { in: [4] } })
     .include({ store })
-    .one();
+    .firstOrThrow();
 ```

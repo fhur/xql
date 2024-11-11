@@ -6,16 +6,16 @@ With SynthQL you don't need to sprinkle your code with permission assertions or 
 
 ## Defining permissions
 
-The `.requires()` method is used to define what permissions are required to run a query.
+The `.permissions()` method is used to define what permissions are required to run a query.
 
 ```ts
-from('users').requires('users:read').all();
+from('users').permissions('users:read').all();
 ```
 
-The `.requires(...roles:string[])` method takes a list of roles. Roles can be any string.
+The `.permissions(...roles:string[])` method takes a list of roles. Roles can be any string.
 
 ```ts
-from('users').requires('users:read', 'users:write').all();
+from('users').permissions('users:read', 'users:write').all();
 ```
 
 You can use an TypeScript enum to define the list of permissions and get extra type safety:
@@ -26,7 +26,9 @@ enum Permissions {
     usersWrite = 'users:write',
 }
 
-from('users').requires(Roles.usersRead, Roles.usersWrite).all();
+const query = from('users')
+    .permissions(Roles.usersRead, Roles.usersWrite)
+    .all();
 ```
 
 ## Role inheritance
@@ -35,18 +37,18 @@ When you include a sub-query, the permissions add up. This means the user needs 
 
 ```ts
 const pets = from('pets')
-    .requires('pets:read')
-    .where({ owner_id: col('users.id') })
+    .permissions('pets:read')
+    .filter({ owner_id: col('users.id') })
     .all();
 
-from('users').requires('users:read').include({ pets }).all();
+const query = from('users').permissions('users:read').include({ pets }).all();
 ```
 
 In this example, the user needs to have the `users:read` and `pets:read` permissions to execute the query.
 
 ## Query context
 
-When you execute a query, you can pass a `context` object. This object is used to pass additional information to the query, such as the user's permissions.
+When you execute a query, you can pass a query `context` object. This object is used to pass additional information to the query, such as the user's permissions.
 
 ```ts
 // You want to generate this from some source, e.g. parsing the cookie sent with a HTTP request
@@ -56,8 +58,8 @@ const context = { permissions: ['users:read', 'pets:read'] };
 const result = await queryEngine.executeAndWait(query, { context });
 ```
 
-The query engine will traverse the query recursively and reject the query unless it meets all the ACL requirements.
+The `QueryEngine` will traverse the query recursively and reject it unless it meets all the ACL requirements. However, if you don't want these permissions (ACL requirements) to be checked, you can set the `dangerouslyIgnorePermissions` option when initializing the `QueryEngine`.
 
-## Query registration
+## What of query whitelisting (i.e. `registerQueries()`)?
 
-When a query is registered, it is registered along with its permissions. This means a malicious client cannot modify the ACL requirements of a query.
+When a query is added to the whitelist using `registerQueries()`, it is registered along with its permissions. This means a malicious client cannot modify the ACL requirements of a query.

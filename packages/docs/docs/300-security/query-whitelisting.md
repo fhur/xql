@@ -10,8 +10,8 @@ const findAllActiveUsers = () => from('users')
 
 const queryEngine = new QueryEngine({...})
 
-// Register the query
-queryEngine.registerQuery(findAllActiveUsers())
+// Register the query (add to the whitelist)
+queryEngine.registerQueries([findAllActiveUsers()]);
 
 // The QueryEngine will now only execute the registered queries
 const result = await queryEngine.executeAndWait(findAllActiveUsers(), { context });
@@ -25,7 +25,7 @@ When you build a traditional REST API, you implicitly "register queries" by defi
 
 ## How to register queries
 
-Registering queries is simple. All you need to do is pass the query to the `QueryBuilder#registerQueries` method.
+Registering queries is simple. All you need to do is pass the query to the `registerQueries()` method.
 
 As some queries take parameters, you will need to pass a placeholder value when you register the query.
 
@@ -77,7 +77,7 @@ To register these types of queries correctly, you will need to register each var
 
 ```ts
 const queryEngine = new QueryEngine({
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://user:password@localhost:5432/dbname',
 });
 
 queryEngine.registerQueries([

@@ -7,7 +7,7 @@ SynthQL-compatible route handler function for use in [Next.js](https://nextjs.or
 import { QueryEngine } from '@synthql/backend';
 
 export const queryEngine = new QueryEngine({
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://user:password@localhost:5432/dbname',
 });
 
 // src/app/[...synthql]/route.ts
@@ -17,7 +17,7 @@ import { queryEngine } from '../../../queryEngine';
 const nextSynthqlRequestHandler = createNextSynthqlHandler(queryEngine);
 
 export async function POST(request: Request) {
-    return await nextSynthqlRequestHandler(request);
+    return nextSynthqlRequestHandler(request);
 }
 ```
 

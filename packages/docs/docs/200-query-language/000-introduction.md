@@ -10,7 +10,7 @@ import { from } from './generated';
 const users = from('users').columns('id', 'name');
 
 export function findUserById(id: string) {
-    return users.where({ id }).maybe();
+    return users.filter({ id }).first();
 }
 ```
 
@@ -22,7 +22,7 @@ import { from } from './generated';
 const users = from('users').columns('id', 'name');
 
 export function findUserById(ids: string[]) {
-    return users.where({ id: { in: ids } }).maybe();
+    return users.filter({ id: { in: ids } }).first();
 }
 ```
 
@@ -37,16 +37,16 @@ const users = from('users').columns('id', 'name');
 
 export function findUserByIds(ids: string[]) {
     const pets = pets
-        .where({
+        .filter({
             owner_id: col('users.id'),
         })
-        .many();
+        .all();
     return users
         .include({
             pets,
         })
-        .where({ id: { in: ids } })
-        .maybe();
+        .filter({ id: { in: ids } })
+        .first();
 }
 ```
 

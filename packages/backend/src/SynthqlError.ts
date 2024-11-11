@@ -130,7 +130,7 @@ export class SynthqlError extends Error {
 
         const lines = [
             'A query with a cardinality of `one` returned no results!',
-            'Hint: are you using .one() when you should be using .maybe()?',
+            'Hint: are you using .firstOrThrow() when you should be using .first()?',
         ];
 
         return new SynthqlError(new Error(), type, lines.join('\n'), 404);

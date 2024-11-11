@@ -7,7 +7,7 @@ SynthQL-compatible route handler function for use in [Express.js](https://expres
 import { QueryEngine } from '@synthql/backend';
 
 export const queryEngine = new QueryEngine({
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://user:password@localhost:5432/dbname',
 });
 
 // src/index.ts

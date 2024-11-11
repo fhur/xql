@@ -13,8 +13,8 @@ const queryEngine = new QueryEngine({
 // Write your query
 const query = from('users')
     .columns('id', 'first_name')
-    .where({ id: { in: [1, 2, 3] } })
-    .many();
+    .filter({ id: { in: [1, 2, 3] } })
+    .all();
 
 // Execute the query
 const result = await queryEngine.executeAndWait(query);

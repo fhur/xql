@@ -59,8 +59,8 @@ describe('useSynthql', () => {
         // @@desc@@ Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and return all selectable columns
 
         const q = from('actor')
-            .where({ actor_id: { in: [1] } })
-            .one();
+            .filter({ actor_id: { in: [1] } })
+            .firstOrThrow();
 
         // @@end-example@@
 
@@ -80,13 +80,13 @@ describe('useSynthql', () => {
     }, 1000);
 
     test('Fetching 0 or 1 rows(s) from the Pagila database with columns to return specified', async () => {
-        // @@start-example@@ Find a single actor by ID with columns to return specified`
+        // @@start-example@@ Find a single actor by ID with columns to return specified
         // @@desc@@ Finds 0 or 1 record(s) in the `actors` table where the `actor_id` is in the list of IDs passed, and returns all selected columns
 
         const q = from('actor')
             .columns('actor_id', 'first_name', 'last_name')
-            .where({ actor_id: { in: [1] } })
-            .maybe();
+            .filter({ actor_id: { in: [1] } })
+            .first();
 
         // @@end-example@@
 
@@ -110,7 +110,7 @@ describe('useSynthql', () => {
 
         const q = from('actor')
             .columns('actor_id', 'first_name', 'last_name')
-            .one();
+            .firstOrThrow();
 
         // @@end-example@@
 
@@ -135,7 +135,7 @@ describe('useSynthql', () => {
         const q = from('actor')
             .columns('actor_id', 'first_name', 'last_name')
             .offset(1)
-            .one();
+            .firstOrThrow();
 
         // @@end-example@@
 
@@ -160,7 +160,7 @@ describe('useSynthql', () => {
         const q = from('actor')
             .columns('actor_id', 'first_name', 'last_name')
             .limit(2)
-            .many();
+            .all();
 
         // @@end-example@@
 
@@ -226,13 +226,13 @@ describe('useSynthql', () => {
             .fill(0)
             .map((_, i) => i + 1);
 
-        // @@start-example@@ Find all actors by ids columns to return specified`
-        // @@desc@@ Finds all the records in the `actors` table where their `id` is in the list of ids, and returns all selectable columns passed
+        // @@start-example@@ Find all actors by ids columns to return specified
+        // @@desc@@ Finds all the records in the `actors` table where their `actor_id` is in the list of IDs passed, and returns all selected columns
 
         const q = from('actor')
             .columns('actor_id', 'first_name', 'last_name')
-            .where({ actor_id: { in: ids } })
-            .many();
+            .filter({ actor_id: { in: ids } })
+            .all();
 
         // @@end-example@@
 
@@ -312,10 +312,10 @@ describe('useSynthql', () => {
                 'manager_staff_id',
                 'last_update',
             )
-            .where({
+            .filter({
                 store_id: col('customer.store_id'),
             })
-            .one();
+            .firstOrThrow();
 
         const q = from('customer')
             .columns(
@@ -326,9 +326,9 @@ describe('useSynthql', () => {
                 'email',
                 'last_update',
             )
-            .where({ customer_id: { in: [1] } })
+            .filter({ customer_id: { in: [1] } })
             .include({ store })
-            .one();
+            .firstOrThrow();
 
         // @@end-example@@
 
@@ -367,10 +367,10 @@ describe('useSynthql', () => {
                 'district',
                 'last_update',
             )
-            .where({
+            .filter({
                 address_id: col('store.address_id'),
             })
-            .one();
+            .firstOrThrow();
 
         const store = from('store')
             .columns(
@@ -379,11 +379,11 @@ describe('useSynthql', () => {
                 'manager_staff_id',
                 'last_update',
             )
-            .where({
+            .filter({
                 store_id: col('customer.store_id'),
             })
             .include({ address })
-            .one();
+            .firstOrThrow();
 
         const q = from('customer')
             .columns(
@@ -394,9 +394,9 @@ describe('useSynthql', () => {
                 'email',
                 'last_update',
             )
-            .where({ customer_id: { in: [4] } })
+            .filter({ customer_id: { in: [4] } })
             .include({ store })
-            .one();
+            .firstOrThrow();
 
         // @@end-example@@
 
@@ -437,10 +437,10 @@ describe('useSynthql', () => {
 
         const city = from('city')
             .columns('city_id', 'country_id', 'city', 'last_update')
-            .where({
+            .filter({
                 city_id: col('address.city_id'),
             })
-            .one();
+            .firstOrThrow();
 
         const address = from('address')
             .columns(
@@ -450,11 +450,11 @@ describe('useSynthql', () => {
                 'district',
                 'last_update',
             )
-            .where({
+            .filter({
                 address_id: col('store.address_id'),
             })
             .include({ city })
-            .one();
+            .firstOrThrow();
 
         const store = from('store')
             .columns(
@@ -463,11 +463,11 @@ describe('useSynthql', () => {
                 'manager_staff_id',
                 'last_update',
             )
-            .where({
+            .filter({
                 store_id: col('customer.store_id'),
             })
             .include({ address })
-            .one();
+            .firstOrThrow();
 
         const q = from('customer')
             .columns(
@@ -478,9 +478,9 @@ describe('useSynthql', () => {
                 'email',
                 'last_update',
             )
-            .where({ customer_id: { in: [4] } })
+            .filter({ customer_id: { in: [4] } })
             .include({ store })
-            .one();
+            .firstOrThrow();
 
         // @@end-example@@
 
@@ -527,18 +527,18 @@ describe('useSynthql', () => {
 
         const country = from('country')
             .columns('country_id', 'country', 'last_update')
-            .where({
+            .filter({
                 country_id: col('city.country_id'),
             })
-            .one();
+            .firstOrThrow();
 
         const city = from('city')
             .columns('city_id', 'city', 'country_id', 'last_update')
-            .where({
+            .filter({
                 city_id: col('address.city_id'),
             })
             .include({ country })
-            .one();
+            .firstOrThrow();
 
         const address = from('address')
             .columns(
@@ -548,11 +548,11 @@ describe('useSynthql', () => {
                 'district',
                 'last_update',
             )
-            .where({
+            .filter({
                 address_id: col('store.address_id'),
             })
             .include({ city })
-            .one();
+            .firstOrThrow();
 
         const store = from('store')
             .columns(
@@ -561,11 +561,11 @@ describe('useSynthql', () => {
                 'manager_staff_id',
                 'last_update',
             )
-            .where({
+            .filter({
                 store_id: col('customer.store_id'),
             })
             .include({ address })
-            .one();
+            .firstOrThrow();
 
         const q = from('customer')
             .columns(
@@ -576,9 +576,9 @@ describe('useSynthql', () => {
                 'email',
                 'last_update',
             )
-            .where({ customer_id: { in: [4] } })
+            .filter({ customer_id: { in: [4] } })
             .include({ store })
-            .one();
+            .firstOrThrow();
 
         // @@end-example@@
 

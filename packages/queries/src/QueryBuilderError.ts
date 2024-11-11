@@ -23,7 +23,7 @@ export class QueryBuilderError extends Error {
             `The table "${query.from}" is including table "${nestedQuery.from}",`,
             `but "${nestedQuery.from}" is missing a join predicate!`,
             '',
-            `Hint: are you missing \`.where({some_id: "${query.from}.some_id"})\``,
+            `Hint: are you missing \`.filter({ some_id: col("${query.from}.some_id") })\``,
             `on the "${nestedQuery.from}" query?`,
             ``,
         ];
