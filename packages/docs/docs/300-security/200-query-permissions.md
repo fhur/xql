@@ -29,7 +29,7 @@ enum Permissions {
 }
 
 const query = from('users')
-    .permissions(Roles.usersRead, Roles.usersWrite)
+    .permissions(Permissions.usersRead, Permissions.usersWrite)
     .all();
 ```
 
@@ -59,6 +59,12 @@ const context = { permissions: ['users:read', 'pets:read'] };
 // Execute the query
 const result = await queryEngine.executeAndWait(query, { context });
 ```
+
+## The security of query permissions
+
+:::info
+While the `QueryEngine` provides a `dangerouslyIgnorePermissions` option, using it bypasses the security benefits of query permissioning and is strongly discouraged in production environments.
+:::
 
 The `QueryEngine` will traverse the query recursively and reject it unless it meets all the ACL requirements. However, if you don't want these permissions (ACL requirements) to be checked, you can set the `dangerouslyIgnorePermissions` option when initializing the `QueryEngine`.
 

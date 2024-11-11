@@ -14,36 +14,37 @@ export function findUserById(id: string) {
 }
 ```
 
-## Find users by IDs
+## Find user by IDs
 
 ```ts
 import { from } from './generated';
 
 const users = from('users').columns('id', 'name');
 
-export function findUserById(ids: string[]) {
+export function findUserByIds(ids: string[]) {
     return users.filter({ id: { in: ids } }).first();
 }
 ```
 
-## Find users with pets (1 to n relation)
+## Find user with pets (1 to n relation)
 
 ```ts
 import { from } from './generated';
 
 const pets = from('pets').columns('id', 'name', 'owner_id');
 
-const users = from('users').columns('id', 'name');
+const users = from('users').columns('id', 'name', 'address');
 
-export function findUserByIds(ids: string[]) {
-    const pets = pets
+export function findUserAndPetsByIds(ids: string[]) {
+    const userPets = pets
         .filter({
             owner_id: col('users.id'),
         })
         .all();
+
     return users
         .include({
-            pets,
+            userPets,
         })
         .filter({ id: { in: ids } })
         .first();
@@ -53,9 +54,10 @@ export function findUserByIds(ids: string[]) {
 This query will return the following shape:
 
 ```ts
-Array<{
+type UserAndPets = {
     id: string;
     name: string;
-    pets: Array<{ id: string; name: string }>;
-}>;
+    address: string;
+    userPets: Array<{ id: string; name: string; owner_id: string }>;
+};
 ```
