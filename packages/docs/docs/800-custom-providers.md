@@ -1,5 +1,9 @@
 # Custom query providers
 
+:::caution WIP
+This page is a work in progress and subject to changes.
+:::
+
 While SynthQL is designed for database queries, it can also work with other data sources. Custom query providers allow you to use specific functions to fetch data from non-database sources as part of your query.
 
 This can be used to fetch data from a REST endpoint, a file, or any other data source you can imagine.

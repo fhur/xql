@@ -62,6 +62,6 @@ const result = await queryEngine.executeAndWait(query, { context });
 
 The `QueryEngine` will traverse the query recursively and reject it unless it meets all the ACL requirements. However, if you don't want these permissions (ACL requirements) to be checked, you can set the `dangerouslyIgnorePermissions` option when initializing the `QueryEngine`.
 
-## What of query whitelisting (i.e. `registerQueries()`)?
+## What of query whitelisting (i.e. `QueryEngine.registerQueries()`)?
 
 When a query is added to the whitelist using `registerQueries()`, it is registered along with its permissions. This ensures that a malicious client cannot modify the ACL requirements of the query.

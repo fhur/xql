@@ -98,8 +98,8 @@ export default function Home(): JSX.Element {
                                     `  .filter({ id: 1 })`,
                                     `  .take(2);`,
                                     ``,
-                                    `// Executing the query`,
-                                    `const { data: movies } = queryEngine.executeAndWait(q);`,
+                                    `// Executing the query (using the React query client)`,
+                                    `const { data: movies } = useSynthql(q);`,
                                     ``,
                                     `console.log(movies);`,
                                     `// Will print:`,
@@ -312,7 +312,7 @@ const query = from('store')
 
     {
         title: 'Security',
-        link: '/docs/security',
+        link: '/docs/security/introduction',
         description:
             'SynthQL offers several security features to help secure your application, including built-in authentication, query whitelisting, and more.',
         code: `

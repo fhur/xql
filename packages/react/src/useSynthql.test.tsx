@@ -297,9 +297,9 @@ describe('useSynthql', () => {
         ]);
     }, 1000);
 
-    test('Fetching 1 row from the Pagila database with offset value specified', async () => {
-        // @@start-example@@ Find 1 actor with offset value specified
-        // @@desc@@ Finds 1 record in the `actor` table, starting from the offset value position
+    test('Fetching 1 row from the Pagila database with `offset(n)` (offset value) specified', async () => {
+        // @@start-example@@ Find 1 actor with `offset(n)` (offset value) specified
+        // @@desc@@ Finds 1 record in the `actor` table, starting from the `offset(n)` (offset value) position
 
         const q = from('actor').offset(1).firstOrThrow();
 

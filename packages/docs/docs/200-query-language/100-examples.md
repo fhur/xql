@@ -63,9 +63,9 @@ Finds 0 through n record(s) in the `actor` table, where `n` is the value passed 
 const q = from('actor').take(2);
 ```
 
-## Find 1 actor with offset value specified
+## Find 1 actor with `offset(n)` (offset value) specified
 
-Finds 1 record in the `actor` table, starting from the offset value position
+Finds 1 record in the `actor` table, starting from the `offset(n)` (offset value) position
 
 ```ts
 const q = from('actor').offset(1).firstOrThrow();
