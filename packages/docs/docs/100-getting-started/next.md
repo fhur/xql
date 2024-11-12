@@ -4,7 +4,12 @@ import InstallPackage from '../../src/components/HomepageFeatures/InstallPackage
 
 :::tip
 Before reading this, first check out:
-[Quick start: Node.js](./quick-start) if you haven't yet
+[Quick start: Node.js](./quick-start) if you haven't already
+:::
+
+:::info
+After reading this, you'll probably want to set up your frontend app to send queries to your new SynthQL server. To get started, check out:
+[Getting started: React](./react) if you haven't already
 :::
 
 ## Install the packages
@@ -45,6 +50,7 @@ import { queryEngine } from '../../../queryEngine';
 
 const nextSynthqlRequestHandler = createNextSynthqlHandler(queryEngine);
 
+// Create route handler
 export async function POST(request: Request) {
     return nextSynthqlRequestHandler(request);
 }

@@ -40,6 +40,7 @@ import { from } from 'src/generated';
 
 const findUserByIds = (ids: number[]) => {
     return (
+        // Select table
         from('users')
             // Select which columns you want
             // NOTE: if you want to select all columns, simply don't use

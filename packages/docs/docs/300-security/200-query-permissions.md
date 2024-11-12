@@ -14,7 +14,7 @@ The `.permissions()` method is used to define which permissions are required to 
 from('users').permissions('users:read').all();
 ```
 
-The `.permissions(...roles: string[])` method takes a list of roles, where each role is a string.
+The `.permissions(...listOfPermissions: string[])` method takes a list of permissions, where each permission is a string.
 
 ```ts
 from('users').permissions('users:read', 'users:write').all();
@@ -33,7 +33,7 @@ const query = from('users')
     .all();
 ```
 
-## Role inheritance
+## Permission inheritance
 
 When you include a sub-query, the permissions accumulate. This means the user needs to have all the permissions of both the parent and sub-query in order to execute the query.
 

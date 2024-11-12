@@ -92,7 +92,7 @@ export default function Home(): JSX.Element {
                         <div className="col col--6">
                             <CodeBlock language="typescript">
                                 {[
-                                    `// Compose your query using the query builder`,
+                                    `// Compose your query using the type-safe query builder`,
                                     `const q = from('movies')`,
                                     `  .columns('id', 'title')`,
                                     `  .filter({ id: 1 })`,
@@ -171,6 +171,8 @@ export default function Home(): JSX.Element {
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                             gap: 16,
                             transform: 'translateY(-20%)',
                         }}
@@ -216,23 +218,7 @@ export interface DB {
                 nullable: false;
                 isPrimaryKey: true;
             };
-            first_name: {
-                type: string;
-                selectable: true;
-                includable: true;
-                whereable: true;
-                nullable: false;
-                isPrimaryKey: false;
-            };
-            last_name: {
-                type: string;
-                selectable: true;
-                includable: true;
-                whereable: true;
-                nullable: false;
-                isPrimaryKey: false;
-            };
-            last_update: {
+            name: {
                 type: string;
                 selectable: true;
                 includable: true;
@@ -244,9 +230,11 @@ export interface DB {
     }
 }
 
-// which in turn, allows you to create queries like:
+// which in turn powers a query builder, \`from()\`,
+// which you can use to create SynthQL queries like:
+
 const q = from('actor')
-    .columns('actor_id', 'first_name', 'last_name')
+    .columns('actor_id', 'name')
     .filter({ actor_id: 1 })
     .first();
             `,
@@ -289,7 +277,7 @@ const products = from('products')
     .filter({
         product_id: { in: col('store.product_ids') }
     })
-    .defer()
+    .defer() // <<== Marks the subquery as 'deferred'
     .all();
 
 const query = from('store')
@@ -303,10 +291,33 @@ const query = from('store')
 /* This returns two JSON lines */
 
 // First line of JSON:
-[{ "id": "1", "name": "Fancy store", "products": { "status": "pending" }}]
+[
+    {
+        "id": "1",
+        "name": "Fancy store",
+        "products": {
+            "status": "pending"
+        }
+    }
+]
 
 // Once the products have loaded:
-[{ "id": "1", "name": "Fancy store", "products": { "status": "done", "data": [{ "id": "1", "name": "Shoe", "price": 199 }] }}]
+[
+    {
+        "id": "1",
+        "name": "Fancy store",
+        "products": {
+            "status": "done",
+            "data": [
+                {
+                    "id": "1",
+                    "name": "Shoe",
+                    "price": 199
+                }
+            ]
+        }
+    }
+]
         `,
     },
 
@@ -333,7 +344,8 @@ const findPersonByIds = (ids) => {
             films: findPetsByOwner(col('people.id'))
         })
         .all();
-};`,
+};
+`,
     },
 
     {
@@ -353,6 +365,7 @@ const findFilmsWithRatings = () => {
         .filter({ year: 1965 })
         .include({ ratings })
         .all();
-};`,
+};
+`,
     },
 ];

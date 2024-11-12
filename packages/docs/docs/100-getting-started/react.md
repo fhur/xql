@@ -3,7 +3,7 @@ import InstallPackage from '../../src/components/HomepageFeatures/InstallPackage
 # React
 
 :::info
-This guide assumes that you have setup a server to receive and execute SynthQL queries. If you haven't yet, check out:
+This guide assumes that you have setup a server to receive and execute SynthQL queries. If you haven't already, check out:
 [Quick start: Node.js](./quick-start), [Getting started: Express.js](./express) and [Getting started: Next.js Route Handlers](./next)
 :::
 
