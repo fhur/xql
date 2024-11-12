@@ -3,10 +3,10 @@
 DSL for writing SynthQL queries.
 
 ```ts
-import { from } from './generated.schema';
+import { from } from './generated';
 
 const findUserById = (id: number) =>
-    from('users').columns('id', 'first_name').where({ id }).many();
+    from('users').columns('id', 'first_name').filter({ id }).all();
 ```
 
 ## Links

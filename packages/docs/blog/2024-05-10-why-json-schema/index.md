@@ -5,7 +5,7 @@ authors: [fhur]
 tags: [devlog]
 ---
 
-# Why json-schema?
+## Why json-schema?
 
 I wanted to drop a few words on why we're chosing `JSON schema` as an intermediate representation for our schemas. Putting it in writing will make it clearer, so here goes.
 
@@ -22,7 +22,7 @@ So we know that the query builder needs static type information. What's new is t
 Let's look at a very basic example. Find an actor by ID.
 
 ```ts
-from('actors').where({ id: 1 }).maybe();
+from('actors').filter({ id: 1 }).first();
 ```
 
 We expect this to compile to something like
@@ -39,9 +39,9 @@ Notice that I didn't write `select *`. That's intentional, because we can only s
 
 ```ts
 from('actor')
-  .where({id})
+  .filter({id})
   .include({ films })
-  .maybe()
+  .first()
   .groupingId('actor_id') # <======= WHY DO I HAVE TO DO THIS?
 ```
 
@@ -61,11 +61,14 @@ const from = query<DB>().from;
 const from = query<DB>(db).from;
 ```
 
-# So... why JSON schema?
+## So... why JSON schema?
 
 Ok, now that we've talked about some of the goals we want to support: let's go back to the original question. Why is JSON schema a good choice?
 
-1. There is great tooling support for JSON schema: We can find libraries that generate zod from JSON schema or generate TypeScript types from json schema.
-1. Building a JSON schema programmatically is really easy. Converting from `pg-extract-schema` to JSON schema is trivial, and very easy to unit test.
-1. JSON schema itself is available at runtime: As JSON schema is just a plain old javascript object, it's available at runtime, and so we can pass it to the query builer as input so it can use it to infer the groupingId and select all the fields.
-1. Runtime type checking: In the future we will want to add something like zod to the `QueryEngine` so that it blocks malformed queries. Using JSON Schema we can get zod for free.
+1.  There is great tooling support for JSON schema: We can find libraries that generate zod from JSON schema or generate TypeScript types from json schema.
+
+1.  Building a JSON schema programmatically is really easy. Converting from `pg-extract-schema` to JSON schema is trivial, and very easy to unit test.
+
+1.  JSON schema itself is available at runtime: As JSON schema is just a plain old javascript object, it's available at runtime, and so we can pass it to the query builer as input so it can use it to infer the groupingId and select all the fields.
+
+1.  Runtime type checking: In the future we will want to add something like zod to the `QueryEngine` so that it blocks malformed queries. Using JSON Schema we can get zod for free.

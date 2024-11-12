@@ -3,19 +3,21 @@
 The SynthQL backend.
 
 ```ts
-import { QueryEngine } from "@synthql/backend"
+import { QueryEngine } from '@synthql/backend';
 
-// Initialize the client
-const queryEngine = new QueryEngine({...})
+// Initialize the query engine
+const queryEngine = new QueryEngine({
+    url: 'postgresql://user:password@localhost:5432/dbname',
+});
 
 // Write your query
 const query = from('users')
-    .columns('id','first_name')
-    .where({id: {in:[1,2,3]}})
-    .many()
+    .columns('id', 'first_name')
+    .filter({ id: { in: [1, 2, 3] } })
+    .all();
 
 // Execute the query
-queryEngine.execute(query);
+const result = await queryEngine.executeAndWait(query);
 ```
 
 ## Links

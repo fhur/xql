@@ -1,13 +1,17 @@
 # @synthql/react
 
-React client for SynthQL based on `tanstack/react-query`.
+React client for SynthQL based on [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/installation).
 
 ```ts
 import { from } from './generated';
 
-const query = from('users').columns('id', 'first_name').where({ id: 1 }).many();
+const query = from('users').columns('id', 'first_name').filter({ id: 1 }).all();
 
-useSynthql(query);
+const { data: users } = useSynthql(query);
+
+console.log(users);
+// Will print:
+[{ id: 1, first_name: 'John' }];
 ```
 
 ## Links

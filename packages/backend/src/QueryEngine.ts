@@ -213,9 +213,9 @@ export class QueryEngine<DB> {
         query: TQuery,
         opts?: {
             /**
-             * When using middlewares (via the `QueryEngine` options),
-             * pass the data that should be used to transform
-             * the query, via this option
+             * When using `.permissions()` (in your query) and/or `middlewares`
+             * (via the `QueryEngine` options), use this option to pass the
+             * data that should be used to transform and/or check the query
              *
              * e.g.:
              *

@@ -28,7 +28,7 @@ npx @synthql/cli generate \
 
 In the example above, this will generate a types file at `src/generated/db.ts`, a schema definitions file at `src/generated/schema.ts` and an index file that connects both to the query builder and exports them, at `src/generated/index.ts`.
 
-This connection allows you to export a type-safe query builder, `from()`, which has all the table and column names with the corresponding TypeScript types, as sourced from your database.
+This connection allows you to simply import a type-safe query builder, `from()`, which includes all the table and column names along with their corresponding TypeScript types, sourced directly from your database.
 
 ## Write your first query
 
@@ -40,6 +40,7 @@ import { from } from 'src/generated';
 
 const findUserByIds = (ids: number[]) => {
     return (
+        // Select table
         from('users')
             // Select which columns you want
             // NOTE: if you want to select all columns, simply don't use
@@ -61,14 +62,8 @@ The `QueryEngine` compiles SynthQL queries into plain SQL and sends them to the 
 // src/queryEngine.ts
 import { QueryEngine } from '@synthql/backend';
 
-// Ensure DATABASE_URL is set in your .env file:
-// DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL environment variable is required!');
-}
-
 export const queryEngine = new QueryEngine({
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://user:password@localhost:5432/dbname',
 });
 ```
 

@@ -29,8 +29,8 @@ describe('useSynthql test examples', () => {
 
                 const q = from('users')
                     .select({ id: true, name: true })
-                    .where({ id: { in: ['1'] } })
-                    .maybe();
+                    .filter({ id: { in: ['1'] } })
+                    .first();
 
                 const result = useSynthql<DB, 'users', typeof q>(q);
 

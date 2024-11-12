@@ -4,7 +4,12 @@ import InstallPackage from '../../src/components/HomepageFeatures/InstallPackage
 
 :::tip
 Before reading this, first check out:
-[Quick start: Node.js](./quick-start) if you haven't yet
+[Quick start: Node.js](./quick-start) if you haven't already
+:::
+
+:::info
+After reading this, you'll probably want to set up your frontend app to send queries to your new SynthQL server. To get started, check out:
+[Getting started: React](./react) if you haven't already
 :::
 
 ## Install the packages
@@ -31,14 +36,8 @@ The `QueryEngine` compiles SynthQL queries into plain SQL and sends them to the 
 // src/queryEngine.ts
 import { QueryEngine } from '@synthql/backend';
 
-// Ensure DATABASE_URL is set in your .env file:
-// DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL environment variable is required!');
-}
-
 export const queryEngine = new QueryEngine({
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://user:password@localhost:5432/dbname',
 });
 ```
 
@@ -53,8 +52,9 @@ import { queryEngine } from './queryEngine';
 const app = express();
 const expressSynthqlRequestHandler = createExpressSynthqlHandler(queryEngine);
 
+// Create route handler
 app.post('/synthql', async (req, res) => {
-    return await expressSynthqlRequestHandler(req, res);
+    return expressSynthqlRequestHandler(req, res);
 });
 
 app.listen(3000);

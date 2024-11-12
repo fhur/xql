@@ -8,14 +8,21 @@
 ## Show me some code
 
 ```ts
+import { QueryEngine } from '@synthql/backend';
+import { from } from './generated';
+
+export const queryEngine = new QueryEngine({
+    url: 'postgresql://user:password@localhost:5432/dbname',
+});
+
 const query = from('films')
     .columns('id', 'title', 'year')
-    .where({ id: { in: [1, 2, 3] } })
-    .many();
+    .filter({ id: { in: [1, 2, 3] } })
+    .all();
 
-const { data } = useSynthql(query);
+const data = await queryEngine.executeAndWait(query);
 
-// `data` will resolve to
+// `data` will resolve to:
 [
     {
         id: 1,
