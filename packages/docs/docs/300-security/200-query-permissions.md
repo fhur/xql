@@ -2,9 +2,9 @@
 
 SynthQL uses a declarative approach to define the permissions required to run a query.
 
-With SynthQL, you don't need to sprinkle your code with permission assertions or `if` conditions to check for permissions. Instead, you define, on a per-query basis, which permissions are required to run the query, and the `QueryEngine` takes care of the rest.
+With SynthQL, you don't need to sprinkle your code with permission assertions or `if()` conditions to check for permissions. Instead, you define, on a per-query basis, which permissions are required to run the query, and the `QueryEngine` takes care of the rest.
 
-This approach is both simple and very powerful.
+This approach offers both simplicity and robust security control.
 
 ## Defining permissions
 
@@ -35,7 +35,7 @@ const query = from('users')
 
 ## Permission inheritance
 
-When you include a sub-query, the permissions accumulate. This means the user needs to have all the permissions of both the parent and sub-query in order to execute the query.
+When you include a subquery, the permissions accumulate. Users must have all permissions from both parent and subquery to execute the combined query.
 
 ```ts
 const pets = from('pets')

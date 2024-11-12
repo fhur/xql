@@ -16,7 +16,7 @@ Next.js enthusiasts, your Route Handlers are about to get a serious upgrade! Sta
 
 Frontend focused? 🎨 Our React [integration guide](./getting-started/react) will help you bring that SynthQL magic to your client-side applications, whether you're using plain React or any React-flavored framework.
 
-Pick your path below and let's start building something awesome!
+Pick your path below and let's start building something awesome.
 
 ## Quick start: Node.js
 

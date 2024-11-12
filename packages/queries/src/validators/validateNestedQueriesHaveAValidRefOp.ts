@@ -3,7 +3,7 @@ import { Query } from '../types/types';
 import { isRefOp } from './isRefOp';
 
 /**
- Validate that every included sub-query has at least one RefOp
+ Validate that every included subquery has at least one RefOp
  */
 export function validateNestedQueriesHaveAValidRefOp<DB>(query: Query<DB>) {
     const nestedQueries = Object.values(query.include ?? {});
