@@ -1,7 +1,7 @@
 {
     "name": "@synthql/queries",
     "type": "module",
-    "version": "0.108.4",
+    "version": "0.109.4",
     "main": "build/src/index.cjs",
     "module": "build/src/index.js",
     "types": "build/types/src/index.d.ts",

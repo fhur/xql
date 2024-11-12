@@ -1,7 +1,7 @@
 {
     "name": "@synthql/backend",
     "type": "module",
-    "version": "0.108.4",
+    "version": "0.109.4",
     "main": "build/src/index.cjs",
     "module": "build/src/index.js",
     "types": "build/types/src/index.d.ts",
@@ -28,7 +28,7 @@
         "benchmarks": "yarn vitest run src/tests/benchmarks/bench.test.ts"
     },
     "dependencies": {
-        "@synthql/queries": "0.108.4",
+        "@synthql/queries": "0.109.4",
         "kysely": "^0.27.3",
         "pg": "^8.11.3",
         "sql-formatter": "^15.0.2"

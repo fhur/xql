@@ -1,7 +1,7 @@
 {
     "name": "@synthql/handler-express",
     "type": "module",
-    "version": "0.108.4",
+    "version": "0.109.4",
     "main": "build/src/index.cjs",
     "module": "build/src/index.js",
     "types": "build/types/src/index.d.ts",
@@ -27,8 +27,8 @@
         "format": "yarn prettier --config ../../prettier.config.js --write ./src/"
     },
     "dependencies": {
-        "@synthql/backend": "0.108.4",
-        "@synthql/queries": "0.108.4"
+        "@synthql/backend": "0.109.4",
+        "@synthql/queries": "0.109.4"
     },
     "devDependencies": {
         "@types/express": "^4.17.21",

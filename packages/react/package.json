@@ -1,7 +1,7 @@
 {
     "name": "@synthql/react",
     "type": "module",
-    "version": "0.108.4",
+    "version": "0.109.4",
     "main": "build/src/index.cjs",
     "module": "build/src/index.js",
     "types": "build/types/src/index.d.ts",
@@ -27,9 +27,9 @@
         "compile-executable-examples": "node ../../scripts/compile-executable-examples.cjs ./src/useSynthql.test.tsx"
     },
     "dependencies": {
-        "@synthql/backend": "0.108.4",
-        "@synthql/handler-express": "0.108.4",
-        "@synthql/queries": "0.108.4"
+        "@synthql/backend": "0.109.4",
+        "@synthql/handler-express": "0.109.4",
+        "@synthql/queries": "0.109.4"
     },
     "devDependencies": {
         "@tanstack/react-query": "^4",
