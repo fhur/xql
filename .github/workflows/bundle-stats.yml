@@ -1,0 +1,41 @@
+name: Comment with HTML on Commit
+
+on:
+    pull_request:
+        branches-ignore:
+            - master
+            - gh-pages
+
+jobs:
+    comment-with-bundle-stats:
+        runs-on: ubuntu-latest
+
+        steps:
+            # Checkout the repository
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+
+            # Generate the HTML file
+            # Replace this with the actual command to generate your HTML
+            - name: Generate HTML
+              run: |
+                  echo '<html><body><h1>Hello, World!</h1></body></html>' > output.html
+
+            # Read the generated HTML content
+            - name: Read HTML Content
+              id: read_html
+              run: |
+                  html_content=$(cat output.html)
+                  echo "::set-output name=html_content::$html_content"
+
+            - name: Create comment
+              uses: peter-evans/create-or-update-comment@v4
+              with:
+                issue-number: ${{github.event.number}}
+                body: |
+                    This is a multi-line test comment
+                    - With GitHub **Markdown** :sparkles:
+                    - Created by [create-or-update-comment][1]
+
+                    [1]: https://github.com/peter-evans/create-or-update-comment
+                reactions: '+1'
